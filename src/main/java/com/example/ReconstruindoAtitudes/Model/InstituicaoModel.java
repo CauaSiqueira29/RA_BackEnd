@@ -1,34 +1,33 @@
 package com.example.ReconstruindoAtitudes.Model;
 
-import com.example.ReconstruindoAtitudes.DTOs.AgressorPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.InstituicaoPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
-@Table(name="usuarios")
+@Table(name="instituicao")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgressorModel{
+public class InstituicaoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String email;
+    private String nome;
 
     private String senha;
 
-    private String nome;
+    private String cnpj;
 
-    public AgressorModel(AgressorPostDTO data){
-        this.email = data.email();
-        this.senha = data.senha();
+    public InstituicaoModel(InstituicaoPostDTO data){
         this.nome = data.nome();
+        this.senha = data.senha();
+        this.cnpj = data.cnpj();
     }
 }
