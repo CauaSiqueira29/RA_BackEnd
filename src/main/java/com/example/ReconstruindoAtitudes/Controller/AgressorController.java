@@ -30,4 +30,6 @@ public class AgressorController {
         List<AgressorGetDTO> agressorList = repository.findAll().stream().map(AgressorGetDTO::new).toList();
         return agressorList;
     }
+
+
 }
