@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+//DTO q envia os dados do agressor
 public record AgressorPostDTO(@NotBlank String nome,
                               @NotBlank String email,
                               @NotBlank String senha,

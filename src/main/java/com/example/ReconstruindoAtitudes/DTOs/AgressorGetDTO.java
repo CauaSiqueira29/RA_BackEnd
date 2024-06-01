@@ -4,6 +4,7 @@ import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 
 import java.util.List;
 
+//DTO que pega os dados
 public record AgressorGetDTO(Long id, String email,
                              String nome,
                              String senha,
