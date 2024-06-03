@@ -9,10 +9,9 @@ import java.util.List;
 //DTO q envia os dados do agressor
 public record AgressorPostDTO(@NotBlank String nome,
                               @NotBlank String email,
-                              @NotBlank String senha,
                               @NotBlank String contato,
-                              @NotBlank String dataDeNascimento,
-                              @NotBlank String estadoCivil,
+                              @NotBlank String dataNascimento,
+                              @NotBlank String estadocivil,
                               @NotBlank String genero,
                               @NotBlank String profissao,
                               @NotEmpty @Size(min = 19, max = 19) List<String> perguntas) {

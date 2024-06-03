@@ -25,15 +25,13 @@ public class AgressorModel{
 
     private String email;
 
-    private String senha;
-
     private String nome;
 
     private String contato;
 
-    private String dataDeNascimento;
+    private String dataNascimento;
 
-    private String estadoCivil;
+    private String estadocivil;
 
     private String genero;
 
@@ -44,11 +42,10 @@ public class AgressorModel{
 
     public AgressorModel(AgressorPostDTO data){
         this.email = data.email();
-        this.senha = data.senha();
         this.nome = data.nome();
         this.contato = data.contato();
-        this.dataDeNascimento = data.dataDeNascimento();
-        this.estadoCivil = data.estadoCivil();
+        this.dataNascimento = data.dataNascimento();
+        this.estadocivil = data.estadocivil();
         this.genero = data.genero();
         this.profissao = data.profissao();
         this.perguntas = data.perguntas();
