@@ -3,6 +3,7 @@ package com.example.ReconstruindoAtitudes.Controller;
 import com.example.ReconstruindoAtitudes.DTOs.*;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
+import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentoriaRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("instituicao")
@@ -27,7 +29,7 @@ public class InstituicaoController {
     @Autowired
     private MentoriaRepository mentoriaRepository;
 
-    @PostMapping("/cadastro/intituicao")
+    @PostMapping("/cadastro/instituicao")
     public ResponseEntity<InstituicaoModel> postInstituicao(@RequestBody @Valid InstituicaoPostDTO data){
         var instituicao = new InstituicaoModel(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(instituicaoRepository.save(instituicao));
@@ -50,8 +52,13 @@ public class InstituicaoController {
     }
 
     @GetMapping("/retorna/mentorias")
-    public List<MentoriaGetDTO> getMentorias(){
-        return mentoriaRepository.findAll().stream().map(MentoriaGetDTO::new).toList();
+    public List<MentoriaGetDTO> getMentorias() {
+        List<MentoriaModel> mentorias = mentoriaRepository.findAll();
+        System.out.println("Total de mentorias encontradas: " + mentorias.size());
+        mentorias.forEach(mentoria -> System.out.println("Mentoria: " + mentoria.getId() + ", Mentor: " + mentoria.getMentor()));
+        return mentorias.stream()
+                .map(MentoriaGetDTO::new)
+                .collect(Collectors.toList());
     }
 
     @DeleteMapping("/delete/mentor/{id}")
@@ -62,6 +69,6 @@ public class InstituicaoController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
+    } //teste
 
 }

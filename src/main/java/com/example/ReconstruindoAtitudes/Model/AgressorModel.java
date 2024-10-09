@@ -27,7 +27,7 @@ public class AgressorModel{
 
     private String dataNascimento;
 
-    private String estadocivil;
+    private String estadoCivil;
 
     private String genero;
 
@@ -77,7 +77,7 @@ public class AgressorModel{
         this.nome = data.nome();
         this.contato = data.contato();
         this.dataNascimento = data.dataNascimento();
-        this.estadocivil = data.estadocivil();
+        this.estadoCivil = data.estadocivil();
         this.genero = data.genero();
         this.profissao = data.profissao();
         this.pergunta1 = data.pergunta1();
@@ -93,7 +93,7 @@ public class AgressorModel{
         this.pergunta11 = data.pergunta11();
         this.pergunta12 = data.pergunta12();
         this.pergunta13 = data.pergunta13();
-        this.pergunta14= data.pergunta14();
+        this.pergunta14 = data.pergunta14();
         this.pergunta15 = data.pergunta15();
         this.pergunta16 = data.pergunta16();
         this.pergunta17 = data.pergunta17();

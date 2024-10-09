@@ -1,11 +1,15 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
+import com.example.ReconstruindoAtitudes.DTOs.MentoriaGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.Model.AgendarMentoriaModel;
-import com.example.ReconstruindoAtitudes.services.MentoriaService;
+import com.example.ReconstruindoAtitudes.Repository.MentoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("mentoria")
@@ -13,12 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class MetoriaController {
 
     @Autowired
-    private MentoriaService mentoriaService;
+    private MentoriaRepository mentoriaRepository;
 
-    @PostMapping("/agendar")
-    public ResponseEntity<String> agendarMentoria(@RequestBody @Valid AgendarMentoriaModel request) {
-        String resultado = mentoriaService.agendarMentoria(request.getMentorId(), request.getHorario());
-        return ResponseEntity.ok(resultado);
+//    @PostMapping("/agendar")
+//    public ResponseEntity<AgendarMentoriaModel> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
+//        var mentoria = new AgendarMentoriaModel(data);
+//        return ResponseEntity.ok(mentoria);
+//    }
+
+    @GetMapping("/mentorias")
+    public List<MentoriaGetDTO> getMentorias(){
+        return mentoriaRepository.findAll().stream().map(MentoriaGetDTO::new).toList();
     }
+
 
 }

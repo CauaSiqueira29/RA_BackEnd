@@ -2,6 +2,8 @@ package com.example.ReconstruindoAtitudes.Controller;
 
 import com.example.ReconstruindoAtitudes.DTOs.AgressorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.AgressorGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.MentoriaPostDTO;
+import com.example.ReconstruindoAtitudes.Model.AgendarMentoriaModel;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
 import jakarta.validation.Valid;
@@ -24,6 +26,12 @@ public class AgressorController {
     public ResponseEntity<AgressorModel> postAgressor(@RequestBody @Valid AgressorPostDTO data){
         AgressorModel agressor = new AgressorModel(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(agressor));
+    }
+
+    @PostMapping("/agendar_mentoria")
+    public ResponseEntity<AgendarMentoriaModel> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
+        var mentoria = new AgendarMentoriaModel(data);
+        return ResponseEntity.ok(mentoria);
     }
 
     @GetMapping("/retornacadastrados")
