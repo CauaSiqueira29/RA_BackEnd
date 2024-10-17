@@ -1,8 +1,6 @@
-package com.example.ReconstruindoAtitudes.DTOs;
+package com.example.ReconstruindoAtitudes.DTOs.Agressor;
 
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
-
-import java.util.List;
 
 //DTO que pega os dados
 public record AgressorGetDTO(Long id,

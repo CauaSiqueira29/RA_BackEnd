@@ -1,4 +1,4 @@
-package com.example.ReconstruindoAtitudes.DTOs;
+package com.example.ReconstruindoAtitudes.DTOs.Login;
 
 import jakarta.validation.constraints.NotBlank;
 

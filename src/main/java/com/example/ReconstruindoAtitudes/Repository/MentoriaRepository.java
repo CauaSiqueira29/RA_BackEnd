@@ -3,8 +3,7 @@ package com.example.ReconstruindoAtitudes.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.ReconstruindoAtitudes.Model.Mentoria;
+import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 
-@Repository
-public interface MentoriaRepository extends JpaRepository<Mentoria, Long> {
+public interface MentoriaRepository extends JpaRepository<MentoriaModel, Long> {
 }

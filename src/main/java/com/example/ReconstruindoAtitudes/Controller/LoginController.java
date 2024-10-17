@@ -1,6 +1,6 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
-import com.example.ReconstruindoAtitudes.DTOs.LoginPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Login.LoginPostDTO;
 import com.example.ReconstruindoAtitudes.services.LoginService;
 
 import java.util.HashMap;

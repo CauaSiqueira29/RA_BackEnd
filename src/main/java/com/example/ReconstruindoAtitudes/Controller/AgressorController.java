@@ -1,7 +1,7 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
-import com.example.ReconstruindoAtitudes.DTOs.AgressorPostDTO;
-import com.example.ReconstruindoAtitudes.DTOs.AgressorGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
 import jakarta.validation.Valid;

@@ -1,8 +1,7 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
-import com.example.ReconstruindoAtitudes.DTOs.InstituicaoGetDTO;
-import com.example.ReconstruindoAtitudes.DTOs.InstituicaoPostDTO;
-import com.example.ReconstruindoAtitudes.DTOs.LoginPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
 import jakarta.validation.Valid;

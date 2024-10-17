@@ -1,6 +1,6 @@
 package com.example.ReconstruindoAtitudes.Model;
 
-import com.example.ReconstruindoAtitudes.DTOs.MentoriaPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,12 +1,7 @@
-package com.example.ReconstruindoAtitudes.DTOs;
+package com.example.ReconstruindoAtitudes.DTOs.Agressor;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 
-import java.util.List;
-
-//DTO q envia os dados do agressor
 public record AgressorPostDTO(@NotBlank String nome,
                               @NotBlank String email,
                               @NotBlank String contato,

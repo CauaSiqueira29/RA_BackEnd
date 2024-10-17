@@ -1,6 +1,6 @@
 package com.example.ReconstruindoAtitudes.Model;
 
-import com.example.ReconstruindoAtitudes.DTOs.InstituicaoPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

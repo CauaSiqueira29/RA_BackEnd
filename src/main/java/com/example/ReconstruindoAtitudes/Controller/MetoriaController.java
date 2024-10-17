@@ -1,7 +1,7 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
-import com.example.ReconstruindoAtitudes.DTOs.MentoriaGetDTO;
-import com.example.ReconstruindoAtitudes.DTOs.MentoriaPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.Model.AgendarMentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoriaRepository;
 import jakarta.validation.Valid;
@@ -19,16 +19,15 @@ public class MetoriaController {
     @Autowired
     private MentoriaRepository mentoriaRepository;
 
-//    @PostMapping("/agendar")
-//    public ResponseEntity<AgendarMentoriaModel> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
-//        var mentoria = new AgendarMentoriaModel(data);
-//        return ResponseEntity.ok(mentoria);
-//    }
+    @PostMapping("/agendar")
+    public ResponseEntity<AgendarMentoriaModel> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
+        var mentoria = new AgendarMentoriaModel(data);
+        return ResponseEntity.ok(mentoria);
+    }
 
     @GetMapping("/mentorias")
     public List<MentoriaGetDTO> getMentorias(){
         return mentoriaRepository.findAll().stream().map(MentoriaGetDTO::new).toList();
     }
-
 
 }

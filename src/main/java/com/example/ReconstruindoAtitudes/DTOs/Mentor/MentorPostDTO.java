@@ -1,4 +1,4 @@
-package com.example.ReconstruindoAtitudes.DTOs;
+package com.example.ReconstruindoAtitudes.DTOs.Mentor;
 
 import jakarta.validation.constraints.NotBlank;
 

@@ -1,4 +1,4 @@
-package com.example.ReconstruindoAtitudes.DTOs;
+package com.example.ReconstruindoAtitudes.DTOs.Mentor;
 
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
 
