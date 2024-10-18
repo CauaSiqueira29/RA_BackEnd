@@ -4,6 +4,7 @@ import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
 import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoriaRepository;
+import com.example.ReconstruindoAtitudes.services.MentoriaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +15,19 @@ import java.util.List;
 @RestController
 @RequestMapping("mentoria")
 @CrossOrigin(origins = "*")
-public class MetoriaController {
+public class MentoriaController {
 
     @Autowired
-    private MentoriaRepository mentoriaRepository;
+    private MentoriaService service;
 
     @PostMapping("/agendar")
     public ResponseEntity<MentoriaModel> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
-        var mentoria = new MentoriaModel(data);
-        mentoriaRepository.save(mentoria);
-        return ResponseEntity.ok(mentoria);
+        return service.agendarMentoria(data);
     }
 
     @GetMapping("/mentorias")
-    public List<MentoriaGetDTO> getMentorias(){
-        return mentoriaRepository.findAll().stream().map(MentoriaGetDTO::new).toList();
+    public ResponseEntity<List<MentoriaGetDTO>> getMentorias(){
+        return service.listarMentorias();
     }
 
 }
