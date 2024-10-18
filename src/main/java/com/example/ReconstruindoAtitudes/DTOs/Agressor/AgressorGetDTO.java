@@ -2,12 +2,13 @@ package com.example.ReconstruindoAtitudes.DTOs.Agressor;
 
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 
-//DTO que pega os dados
+import java.time.LocalDate;
+
 public record AgressorGetDTO(Long id,
                              String email,
                              String nome,
                              String contato,
-                             String dataNascimento,
+                             LocalDate dataNascimento,
                              String estadocivil,
                              String genero,
                              String profissao,

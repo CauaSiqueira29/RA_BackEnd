@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name="usuarios")
+@Table(name="agressores")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class AgressorModel{
 
     private String contato;
 
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     private String estadocivil;
 
@@ -93,7 +95,7 @@ public class AgressorModel{
         this.pergunta11 = data.pergunta11();
         this.pergunta12 = data.pergunta12();
         this.pergunta13 = data.pergunta13();
-        this.pergunta14= data.pergunta14();
+        this.pergunta14 = data.pergunta14();
         this.pergunta15 = data.pergunta15();
         this.pergunta16 = data.pergunta16();
         this.pergunta17 = data.pergunta17();

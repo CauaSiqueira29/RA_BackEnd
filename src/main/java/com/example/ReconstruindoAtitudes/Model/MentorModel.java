@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="mentor")
+@Table(name="mentores")
 public class MentorModel {
 
     @Id

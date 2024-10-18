@@ -2,7 +2,7 @@ package com.example.ReconstruindoAtitudes.Model;
 
 
 
-import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +18,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "mentorias")
 public class MentoriaModel {
 
     @Id
@@ -29,7 +30,7 @@ public class MentoriaModel {
     private AgressorModel agressorNome;
     private AgressorModel agressorContato;
 
-    public MentoriaModel(MentoriaDTO data){
+    public MentoriaModel(MentoriaPostDTO data){
         this.mentor = data.mentor();
         this.hour = data.hour();
         this.agressorNome = data.agressorNome();
