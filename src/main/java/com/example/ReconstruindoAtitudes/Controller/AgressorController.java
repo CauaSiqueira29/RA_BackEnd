@@ -2,6 +2,7 @@ package com.example.ReconstruindoAtitudes.Controller;
 
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPutDTO;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
 import com.example.ReconstruindoAtitudes.services.AgressorService;
@@ -26,10 +27,19 @@ public class AgressorController {
         return service.cadastrarAgressor(data);
     }
 
-    @GetMapping("/retornacadastrados")
+    @GetMapping("/listar")
     public ResponseEntity<List<AgressorGetDTO>> getAgressores(){
         return service.listarAgressores();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AgressorGetDTO> atualizaAgressor(@RequestBody @Valid AgressorPutDTO data, @PathVariable Long id){
+        return service.atualizarAgressor(data, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AgressorGetDTO> deletarAgressor(@PathVariable Long id){
+        return service.deletaAgressor(id);
+    }
 
 }

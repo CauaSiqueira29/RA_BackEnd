@@ -25,9 +25,16 @@ public class MentoriaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "mentor_id")
     private MentorModel mentor;
+
     private LocalTime hour;
+
+    @OneToOne
     private AgressorModel agressorNome;
+
+    @OneToOne
     private AgressorModel agressorContato;
 
     public MentoriaModel(MentoriaPostDTO data){

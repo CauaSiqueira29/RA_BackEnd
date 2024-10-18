@@ -2,10 +2,7 @@ package com.example.ReconstruindoAtitudes.Model;
 
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,7 +12,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgressorModel{
+@EqualsAndHashCode(of = "id")
+public class AgressorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,24 +23,14 @@ public class AgressorModel{
 
     private String nome;
 
-    private String contato;
-
     private LocalDate dataNascimento;
 
-    private String estadocivil;
-
-    private String genero;
-
-    private String profissao;
-
+    @OneToOne
+    private MentoriaModel mentoria;
 
     public AgressorModel(AgressorPostDTO data){
         this.email = data.email();
         this.nome = data.nome();
-        this.contato = data.contato();
         this.dataNascimento = data.dataNascimento();
-        this.estadocivil = data.estadocivil();
-        this.genero = data.genero();
-        this.profissao = data.profissao();
     }
 }

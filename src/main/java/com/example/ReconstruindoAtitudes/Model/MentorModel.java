@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -20,6 +22,9 @@ public class MentorModel {
     private Long id;
     private String name;
     private String bio;
+
+    @OneToMany(mappedBy = "mentor")
+    private List<MentoriaModel> mentorias;
 
     public MentorModel(MentorPostDTO data){
         this.name = data.nome();

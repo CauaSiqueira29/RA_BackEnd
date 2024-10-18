@@ -25,7 +25,7 @@ public class MentoriaController {
         return service.agendarMentoria(data);
     }
 
-    @GetMapping("/mentorias")
+    @GetMapping("/listar")
     public ResponseEntity<List<MentoriaGetDTO>> getMentorias(){
         return service.listarMentorias();
     }

@@ -26,7 +26,7 @@ public class InstituicaoController {
         return service.cadastrarInstituicao(data);
     }
 
-    @GetMapping("/retornainstituicao")
+    @GetMapping("/listar")
     public ResponseEntity<List<InstituicaoGetDTO>> getAgressores(){
         return service.listarInstituicoes();
     }
