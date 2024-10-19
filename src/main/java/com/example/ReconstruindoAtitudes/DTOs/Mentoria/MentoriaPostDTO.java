@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 
 public record MentoriaPostDTO(@NotBlank MentorModel mentor,
-                              @NotNull LocalTime hour,
+                              @NotNull LocalTime hora,
                               @NotBlank AgressorModel agressorNome,
                               @NotBlank AgressorModel agressorContato) {
     

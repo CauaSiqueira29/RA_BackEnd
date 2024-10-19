@@ -2,10 +2,12 @@ package com.example.ReconstruindoAtitudes.Controller;
 
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPutDTO;
 import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoriaRepository;
 import com.example.ReconstruindoAtitudes.services.MentoriaService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,21 @@ public class MentoriaController {
     @GetMapping("/listar")
     public ResponseEntity<List<MentoriaGetDTO>> getMentorias(){
         return service.listarMentorias();
+    }
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<MentoriaGetDTO> getMentoriaById(@PathVariable Long id){
+        return service.retornaMentoriaPorId(id);
+    }
+
+    @PutMapping("/atualiza/{id}")
+    public ResponseEntity<MentoriaGetDTO> atualizaMentoriaById(@RequestBody @Valid MentoriaPutDTO data, @PathVariable Long id){
+        return service.atualizarMentoria(data, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MentoriaGetDTO> deleteMentoriaById(@PathVariable Long id){
+        return service.deletaMentoria(id);
     }
 
 }

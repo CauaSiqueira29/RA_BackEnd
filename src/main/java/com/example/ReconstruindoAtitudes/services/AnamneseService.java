@@ -27,4 +27,31 @@ public class AnamneseService {
         return ResponseEntity.ok(repository.findAll().stream().map(AnamneseGetDTO::new).toList());
     }
 
+    public ResponseEntity<AnamneseGetDTO> retornaAnamnesePorId(Long id){
+        var procuraAnamnese = repository.findById(id);
+
+        if(procuraAnamnese.isPresent()){
+            var anamnese = procuraAnamnese.get();
+
+            return ResponseEntity.ok().body(new AnamneseGetDTO(anamnese));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity<AnamneseGetDTO> deletaAnamnese(Long id){
+        var procuraAnamnese = repository.findById(id);
+
+        if (procuraAnamnese.isPresent()){
+            var anamnese = procuraAnamnese.get();
+
+            repository.deleteById(id);
+
+            return ResponseEntity.ok().body(new AnamneseGetDTO(anamnese));
+        }
+
+        return ResponseEntity.notFound().build();
+
+    }
+
 }

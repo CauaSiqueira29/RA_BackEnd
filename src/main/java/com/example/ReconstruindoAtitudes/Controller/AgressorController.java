@@ -32,6 +32,11 @@ public class AgressorController {
         return service.listarAgressores();
     }
 
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<AgressorGetDTO> getAgressorById(@PathVariable Long id){
+        return service.retornaAgressorPorId(id);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AgressorGetDTO> atualizaAgressor(@RequestBody @Valid AgressorPutDTO data, @PathVariable Long id){
         return service.atualizarAgressor(data, id);

@@ -28,6 +28,17 @@ public class AgressorService {
         return ResponseEntity.ok(repository.findAll().stream().map(AgressorGetDTO::new).toList());
     }
 
+    public ResponseEntity<AgressorGetDTO> retornaAgressorPorId(Long id){
+        var procuraAgressor = repository.findById(id);
+
+        if(procuraAgressor.isPresent()){
+            var agressor = procuraAgressor.get();
+            return ResponseEntity.ok().body(new AgressorGetDTO(agressor));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     public ResponseEntity<AgressorGetDTO> atualizarAgressor(AgressorPutDTO data, Long id){
         var proocuraAgressor = repository.findById(id);
 

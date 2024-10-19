@@ -29,7 +29,7 @@ public class MentoriaModel {
     @JoinColumn(name = "mentor_id")
     private MentorModel mentor;
 
-    private LocalTime hour;
+    private LocalTime hora;
 
     @OneToOne
     private AgressorModel agressorNome;
@@ -39,7 +39,7 @@ public class MentoriaModel {
 
     public MentoriaModel(MentoriaPostDTO data){
         this.mentor = data.mentor();
-        this.hour = data.hour();
+        this.hora = data.hora();
         this.agressorNome = data.agressorNome();
         this.agressorContato = data.agressorContato();
     }
