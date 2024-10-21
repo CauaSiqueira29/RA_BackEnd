@@ -1,11 +1,17 @@
 package com.example.ReconstruindoAtitudes.Model;
 
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
+import com.example.ReconstruindoAtitudes.Model.Role.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="instituicoes")
@@ -13,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InstituicaoModel {
+public class InstituicaoModel extends UsuarioModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,13 +27,22 @@ public class InstituicaoModel {
 
     private String nome;
 
-    private String senha;
-
     private String cnpj;
 
-    public InstituicaoModel(InstituicaoPostDTO data){
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public InstituicaoModel(InstituicaoPostDTO data, String senha){
         this.nome = data.nome();
-        this.senha = data.senha();
         this.cnpj = data.cnpj();
+        this.email = data.email();
+        this.senha = senha;
+        this.role = UserRole.INSTITUICAO;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+    }
+
 }

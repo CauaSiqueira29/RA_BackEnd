@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginModel {
+public class AuthenticationModel {
      
     private String cnpj;
     private String senha;

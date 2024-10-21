@@ -8,5 +8,6 @@ import java.time.LocalDate;
 
 public record AgressorPostDTO(@NotBlank String nome,
                               @NotBlank @Email(message = "E-mail Inválido") String email,
-                              @NotNull LocalDate dataNascimento){
+                              @NotNull LocalDate dataNascimento,
+                              @NotBlank String senha){
 }

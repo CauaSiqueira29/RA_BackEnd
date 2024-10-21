@@ -1,7 +1,7 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
-import com.example.ReconstruindoAtitudes.DTOs.Login.LoginPostDTO;
-import com.example.ReconstruindoAtitudes.services.LoginService;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.services.AuthenticationService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +16,15 @@ import org.springframework.http.ResponseEntity;
 
 
 @RestController
-@RequestMapping("login")
+@RequestMapping("/Auth")
 @CrossOrigin(origins = "*")
-public class LoginController {
+public class AuthenticationController {
 
     @Autowired
-    private LoginService loginService;
+    private AuthenticationService loginService;
 
-    @PostMapping
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginPostDTO dados) {
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody AuthenticationPostDTO dados) {
         boolean isAuthenticated = loginService.authenticate(dados.cnpj(), dados.senha());
         Map<String, String> response = new HashMap<>();
         if (isAuthenticated) {
@@ -35,4 +35,5 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
 }
