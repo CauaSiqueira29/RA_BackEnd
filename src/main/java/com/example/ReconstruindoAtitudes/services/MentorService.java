@@ -1,20 +1,14 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoGetDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoTokenGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPutDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorTokenGetDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
-import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,8 +52,8 @@ public class MentorService {
         return ResponseEntity.badRequest().build();
     }
 
-    // Retorna todas
-    public ResponseEntity<List<MentorGetDTO>> listarMentor(){
+    // Retorna todos
+    public ResponseEntity<List<MentorGetDTO>> listarMentores(){
         return ResponseEntity.ok(repository.findAll().stream().map(MentorGetDTO::new).toList());
     }
 
@@ -77,16 +71,35 @@ public class MentorService {
     }
 
     // Atualiza
-    public ResponseEntity<MentorGetDTO> atualizarInstituicao(MentorPutDTO data, Long id){
+    public ResponseEntity<MentorGetDTO> atualizarMentor(MentorPutDTO data, Long id){
         var procuraMentor = repository.findById(id);
 
         if (procuraMentor.isPresent()){
             var mentor = procuraMentor.get();
-            if (data.nome() != null){
-                mentor.setNome(data.nome());
+            if (data.bio() != null){
+                mentor.setBio(data.bio());
+            }
+            if(data.email() != null){
+                mentor.setEmail(data.email());
             }
 
-            return ResponseEntity.ok().body(new MentorGetDTO(instituicao));
+            return ResponseEntity.ok().body(new MentorGetDTO(mentor));
+        }
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    // Deleta
+    public ResponseEntity<MentorGetDTO> deletaMentorPorId(Long id){
+        var procuraMentor = repository.findById(id);
+
+        if (procuraMentor.isPresent()){
+            var mentor = procuraMentor.get();
+
+            repository.deleteById(id);
+
+            return ResponseEntity.ok().body(new MentorGetDTO(mentor));
         }
 
         return ResponseEntity.notFound().build();
