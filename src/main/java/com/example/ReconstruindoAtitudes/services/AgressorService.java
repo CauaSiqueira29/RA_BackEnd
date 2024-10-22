@@ -3,6 +3,7 @@ package com.example.ReconstruindoAtitudes.services;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPutDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorTokenGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
@@ -28,24 +29,42 @@ public class AgressorService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    public ResponseEntity<AgressorModel> cadastrarAgressor(AgressorPostDTO data){
+    // Cadastro
+    public ResponseEntity<AgressorTokenGetDTO> cadastrarAgressor(AgressorPostDTO data){
         Optional<AgressorModel> procuraAgressor = this.repository.findByEmail(data.email());
 
         if(procuraAgressor.isEmpty()){
-            AgressorModel agressor = new AgressorModel(data, )
+            var senhaEncriptada = passwordEncoder.encode(data.senha());
+            AgressorModel agressor = new AgressorModel(data, senhaEncriptada);
+            this.repository.save(agressor);
 
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(agressor);
+            String token = this.tokenService.generateToken(agressor);
+            return ResponseEntity.ok(new AgressorTokenGetDTO(agressor.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().build();
 
     }
 
+    // Login
+    public ResponseEntity<AgressorTokenGetDTO> loginAgressor(@RequestBody @Valid AuthenticationPostDTO data){
+        AgressorModel agressor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        if(passwordEncoder.matches(agressor.getPassword(), data.senha())){
+            String token = this.tokenService.generateToken(agressor);
+            return ResponseEntity.ok(new AgressorTokenGetDTO(agressor.getEmail(), token));
+        }
+
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    // Retorna todos
     public ResponseEntity<List<AgressorGetDTO>> listarAgressores(){
         return ResponseEntity.ok(repository.findAll().stream().map(AgressorGetDTO::new).toList());
     }
 
+    // Retorna por um por ID
     public ResponseEntity<AgressorGetDTO> retornaAgressorPorId(Long id){
         var procuraAgressor = repository.findById(id);
 
@@ -57,6 +76,7 @@ public class AgressorService {
         return ResponseEntity.notFound().build();
     }
 
+    // Atualiza
     public ResponseEntity<AgressorGetDTO> atualizarAgressor(AgressorPutDTO data, Long id){
         var proocuraAgressor = repository.findById(id);
 
@@ -77,6 +97,7 @@ public class AgressorService {
          return ResponseEntity.notFound().build();
     }
 
+    // Deleta
     public ResponseEntity<AgressorGetDTO> deletaAgressor(Long id){
         var procuraAgressor = repository.findById(id);
 
@@ -89,17 +110,6 @@ public class AgressorService {
         }
 
         return ResponseEntity.notFound().build();
-
-    }
-
-    public ResponseEntity<AgressorGetDTO> loginAgressor(@RequestBody @Valid AuthenticationPostDTO data){
-        AgressorModel agressor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
-        if(passwordEncoder.matches(agressor.getPassword(), data.senha())){
-            String token = this.tokenService.generateToken(agressor);
-            return ResponseEntity.ok(new AgressorGetDTO(agressor));
-        }
-
-        return ResponseEntity.badRequest().build();
 
     }
 
