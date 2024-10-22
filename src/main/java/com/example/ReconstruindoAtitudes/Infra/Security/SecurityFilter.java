@@ -1,7 +1,8 @@
 package com.example.ReconstruindoAtitudes.Infra.Security;
 
-import com.example.ReconstruindoAtitudes.Model.AgressorModel;
-import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
+import com.example.ReconstruindoAtitudes.Model.Role.UserRole;
+import com.example.ReconstruindoAtitudes.Model.UsuarioModel;
+import com.example.ReconstruindoAtitudes.services.UsuarioService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,8 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -22,17 +22,20 @@ public class SecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private AgressorRepository repository;
+    private UsuarioService service;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if (login != null){
-            AgressorModel agressor = repository.findByEmail(login).orElseThrow(() -> new RuntimeException("Usuario não encontrado!"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_AGRESSOR"));
-            var authentication = new UsernamePasswordAuthenticationToken(agressor, null, authorities);
+        if (login != null) {
+            UsuarioModel usuario = service.buscarPorEmail(login).orElseThrow(() -> new RuntimeException("Usuario não encontrado!"));
+
+            UserRole userRole = usuario.getRole();
+            var authorities = new SimpleGrantedAuthority("ROLE_" + userRole.getRole().toUpperCase());
+
+            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, List.of(authorities));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

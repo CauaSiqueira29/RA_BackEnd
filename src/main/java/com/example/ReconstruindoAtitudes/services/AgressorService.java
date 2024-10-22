@@ -49,12 +49,12 @@ public class AgressorService {
     public ResponseEntity<AgressorTokenGetDTO> loginAgressor(AuthenticationPostDTO data){
         AgressorModel agressor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
-        if(passwordEncoder.matches(agressor.getPassword(), data.senha())){
+        if(passwordEncoder.matches(data.senha(), agressor.getPassword())){
             String token = this.tokenService.generateToken(agressor);
             return ResponseEntity.ok(new AgressorTokenGetDTO(agressor.getEmail(), token));
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
     }
 

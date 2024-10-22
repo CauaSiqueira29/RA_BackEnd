@@ -29,9 +29,6 @@ public class InstituicaoModel extends UsuarioModel{
 
     private String cnpj;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
     public InstituicaoModel(InstituicaoPostDTO data, String senha){
         this.nome = data.nome();
         this.cnpj = data.cnpj();

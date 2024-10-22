@@ -30,9 +30,6 @@ public class MentorModel extends UsuarioModel{
     @OneToMany(mappedBy = "mentor")
     private List<MentoriaModel> mentorias;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
     public MentorModel(MentorPostDTO data, String senha){
         this.name = data.nome();
         this.bio = data.bio();

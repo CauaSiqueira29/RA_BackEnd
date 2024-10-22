@@ -1,5 +1,8 @@
 package com.example.ReconstruindoAtitudes.Model;
 
+import com.example.ReconstruindoAtitudes.Model.Role.UserRole;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +23,9 @@ public class UsuarioModel implements UserDetails {
 
     public String email;
     public String senha;
+
+    @Enumerated(EnumType.STRING)
+    public UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

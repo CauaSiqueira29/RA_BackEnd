@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mentor")
+@RequestMapping("mentor")
 @CrossOrigin(origins = "*")
 public class MentorController {
 

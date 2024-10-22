@@ -46,8 +46,8 @@ public class InstituicaoController {
         return service.retornaInstituicaoPorId(id);
     }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<InstituicaoGetDTO> atualizaInstituicao(@RequestBody @Valid InstituicaoPutDTO data, Long id){
+    @PutMapping("/{id}")
+    public ResponseEntity<InstituicaoGetDTO> atualizaInstituicao(@RequestBody @Valid InstituicaoPutDTO data, @PathVariable Long id){
         return service.atualizarInstituicao(data, id);
     }
 

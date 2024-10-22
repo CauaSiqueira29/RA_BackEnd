@@ -9,6 +9,7 @@ import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,13 @@ public class InstituicaoService {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
             InstituicaoModel instituicao = new InstituicaoModel(data, senhaEncriptada);
             this.repository.save(instituicao);
+            System.out.println("Instituição salva = " + data.email());
 
             String token = this.tokenService.generateToken(instituicao);
             return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
         }
 
+        System.out.println("Instituição já cadastrada = " + data.email());
         return ResponseEntity.badRequest().build();
     }
 
@@ -49,7 +52,7 @@ public class InstituicaoService {
             return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // Retorna todas
