@@ -43,11 +43,10 @@ public class AgressorService {
         }
 
         return ResponseEntity.badRequest().build();
-
     }
 
     // Login
-    public ResponseEntity<AgressorTokenGetDTO> loginAgressor(@RequestBody @Valid AuthenticationPostDTO data){
+    public ResponseEntity<AgressorTokenGetDTO> loginAgressor(AuthenticationPostDTO data){
         AgressorModel agressor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         if(passwordEncoder.matches(agressor.getPassword(), data.senha())){

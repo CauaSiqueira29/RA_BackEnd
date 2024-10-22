@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
+import com.example.ReconstruindoAtitudes.Model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,13 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(AgressorModel agressor){
+    public String generateToken(UsuarioModel usuario){
         try {
             Algorithm algoritmo = Algorithm.HMAC256(secret);
 
             String token = JWT.create()
                     .withIssuer("Reconst_Atitudes")
-                    .withSubject(agressor.getEmail())
+                    .withSubject(usuario.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algoritmo);
             return token;

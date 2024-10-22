@@ -3,6 +3,8 @@ package com.example.ReconstruindoAtitudes.Controller;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPutDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorTokenGetDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
 import com.example.ReconstruindoAtitudes.Model.AgressorModel;
 import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
 import com.example.ReconstruindoAtitudes.services.AgressorService;
@@ -23,8 +25,13 @@ public class AgressorController {
     private AgressorService service;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<AgressorModel> postAgressor(@RequestBody @Valid AgressorPostDTO data){
+    public ResponseEntity<AgressorTokenGetDTO> postAgressor(@RequestBody @Valid AgressorPostDTO data){
         return service.cadastrarAgressor(data);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AgressorTokenGetDTO> loginAgressor(@RequestBody @Valid AuthenticationPostDTO data){
+        return service.loginAgressor(data);
     }
 
     @GetMapping("/listar")

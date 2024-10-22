@@ -1,34 +1,64 @@
 package com.example.ReconstruindoAtitudes.services;
 
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPutDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoTokenGetDTO;
+import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class InstituicaoService {
 
-    @Autowired
-    private InstituicaoRepository repository;
+    private final InstituicaoRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
-    public ResponseEntity<InstituicaoModel> cadastrarInstituicao(InstituicaoPostDTO data){
+    // Cadastro
+    public ResponseEntity<InstituicaoTokenGetDTO> cadastrarInstituicao(InstituicaoPostDTO data){
+        Optional<InstituicaoModel> procuraInstituicao = this.repository.findByEmail(data.email());
 
-        var instituicao = new InstituicaoModel(data);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(instituicao));
+        if(procuraInstituicao.isEmpty()){
+            var senhaEncriptada = passwordEncoder.encode(data.senha());
+            InstituicaoModel instituicao = new InstituicaoModel(data, senhaEncriptada);
+            this.repository.save(instituicao);
+
+            String token = this.tokenService.generateToken(instituicao);
+            return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
+    // Login
+    public ResponseEntity<InstituicaoTokenGetDTO> loginInstituicao(AuthenticationPostDTO data){
+        InstituicaoModel instituicao = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Instituição não encontrado!"));
+
+        if(passwordEncoder.matches(instituicao.getPassword(), data.senha())){
+            String token = this.tokenService.generateToken(instituicao);
+            return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    // Retorna todas
     public ResponseEntity<List<InstituicaoGetDTO>> listarInstituicoes(){
 
         return ResponseEntity.ok(repository.findAll().stream().map(InstituicaoGetDTO::new).toList());
     }
 
+    // Retorna por um por ID
     public ResponseEntity<InstituicaoGetDTO> retornaInstituicaoPorId(Long id){
         var procuraInstituicao = repository.findById(id);
 
@@ -41,6 +71,7 @@ public class InstituicaoService {
         return ResponseEntity.notFound().build();
     }
 
+    // Atualiza
     public ResponseEntity<InstituicaoGetDTO> atualizarInstituicao(InstituicaoPutDTO data, Long id){
         var procuraInstituicao = repository.findById(id);
 
@@ -57,6 +88,7 @@ public class InstituicaoService {
 
     }
 
+    // Deleta
     public ResponseEntity<InstituicaoGetDTO> deletaInstituicaoPorId(Long id){
         var procuraInstituicao = repository.findById(id);
 
