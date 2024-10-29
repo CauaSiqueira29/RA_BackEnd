@@ -1,6 +1,6 @@
 package com.example.ReconstruindoAtitudes.Model;
 
-import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPostDTO;
 import com.example.ReconstruindoAtitudes.Model.Role.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,12 +15,12 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name="agressores")
+@Table(name="mentorados")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgressorModel extends UsuarioModel {
+public class MentoradoModel extends UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +36,7 @@ public class AgressorModel extends UsuarioModel {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public AgressorModel(AgressorPostDTO data, String senha){
+    public MentoradoModel(MentoradoPostDTO data, String senha){
         this.nome = data.nome();
         this.email = data.email();
         this.dataNascimento = data.dataNascimento();

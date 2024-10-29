@@ -32,16 +32,16 @@ public class MentoriaModel {
     private LocalTime hora;
 
     @OneToOne
-    private AgressorModel agressorNome;
+    private MentoradoModel mentoradoNome;
 
     @OneToOne
-    private AgressorModel agressorContato;
+    private MentoradoModel mentoradoContato;
 
     public MentoriaModel(MentoriaPostDTO data){
         this.mentor = data.mentor();
         this.hora = data.hora();
-        this.agressorNome = data.agressorNome();
-        this.agressorContato = data.agressorContato();
+        this.mentoradoNome = data.mentoradoNome();
+        this.mentoradoContato = data.mentoradoContato();
     }
 
 }

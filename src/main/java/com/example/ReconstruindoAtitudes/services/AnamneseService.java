@@ -1,6 +1,5 @@
 package com.example.ReconstruindoAtitudes.services;
 
-import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Anamnnese.AnamneseGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Anamnnese.AnamnesePostDTO;
 import com.example.ReconstruindoAtitudes.Model.AnamneseModel;

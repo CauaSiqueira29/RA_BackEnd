@@ -1,10 +1,10 @@
 package com.example.ReconstruindoAtitudes.services;
 
-import com.example.ReconstruindoAtitudes.Model.AgressorModel;
+import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
 import com.example.ReconstruindoAtitudes.Model.UsuarioModel;
-import com.example.ReconstruindoAtitudes.Repository.AgressorRepository;
+import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    private AgressorRepository agressorRepository;
+    private MentoradoRepository mentoradoRepository;
 
     @Autowired
     private MentorRepository mentorRepository;
@@ -26,10 +26,10 @@ public class UsuarioService {
 
     public Optional<UsuarioModel> buscarPorEmail(String email) {
 
-        // Procura um Agressor;
-        Optional<AgressorModel> agressor = agressorRepository.findByEmail(email);
-        if (agressor.isPresent()) {
-            return Optional.of(agressor.get());
+        // Procura um Mentorado;
+        Optional<MentoradoModel> mentorado = mentoradoRepository.findByEmail(email);
+        if (mentorado.isPresent()) {
+            return Optional.of(mentorado.get());
         }
 
         // Procura um Mentor;

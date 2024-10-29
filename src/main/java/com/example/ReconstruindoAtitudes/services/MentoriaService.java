@@ -1,7 +1,5 @@
 package com.example.ReconstruindoAtitudes.services;
 
-import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorGetDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Agressor.AgressorPutDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPutDTO;
