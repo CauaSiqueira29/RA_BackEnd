@@ -22,7 +22,7 @@ public class MentorController {
     private MentorService service;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<AuthenticationTokenGetDto> postMentor(@RequestBody @Valid MentorPostDTO data){
+    public ResponseEntity<?> postMentor(@RequestBody @Valid MentorPostDTO data){
         return service.cadastrarMentor(data);
     }
 

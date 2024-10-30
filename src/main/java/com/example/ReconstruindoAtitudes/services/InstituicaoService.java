@@ -26,33 +26,32 @@ public class InstituicaoService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<AuthenticationTokenGetDto> cadastrarInstituicao(InstituicaoPostDTO data){
+    public ResponseEntity<?> cadastrarInstituicao(InstituicaoPostDTO data){
         Optional<InstituicaoModel> procuraInstituicao = this.repository.findByEmail(data.email());
 
         if(procuraInstituicao.isEmpty()){
             var senhaEncriptada = passwordEncoder.encode(data.senha());
             InstituicaoModel instituicao = new InstituicaoModel(data, senhaEncriptada);
             this.repository.save(instituicao);
-            System.out.println("Instituição salva = " + data.email());
 
             String token = this.tokenService.generateToken(instituicao);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
         }
 
-        System.out.println("Instituição já cadastrada = " + data.email());
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("Instituição já cadastrada! " + data.email());
     }
 
     // Login
     public ResponseEntity<AuthenticationTokenGetDto> loginInstituicao(AuthenticationPostDTO data){
         InstituicaoModel instituicao = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Instituição não encontrado!"));
 
-        if(passwordEncoder.matches(instituicao.getPassword(), data.senha())){
+        if(passwordEncoder.matches(data.senha(), instituicao.getPassword())){
             String token = this.tokenService.generateToken(instituicao);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
     }
 
     // Retorna todas

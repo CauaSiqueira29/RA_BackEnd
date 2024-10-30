@@ -26,7 +26,7 @@ public class MentoriaModel {
 
     private LocalDateTime hora;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "mentorado_id")
     private MentoradoModel mentorado;
 

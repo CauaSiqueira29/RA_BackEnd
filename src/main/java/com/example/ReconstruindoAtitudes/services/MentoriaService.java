@@ -3,6 +3,7 @@ package com.example.ReconstruindoAtitudes.services;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPutDTO;
+import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
@@ -26,13 +27,22 @@ public class MentoriaService {
     private MentorRepository mentorRepository;
 
     public ResponseEntity<String> agendarMentoria(MentoriaPostDTO data){
-        var procuraMentorado = mentoradoRepository.findById(data.mentorId());
-        var procuraMentor = mentorRepository.findById(data.mentoradoId());
+        var procuraMentorado = mentoradoRepository.findById(data.mentoradoId());
+        var procuraMentor = mentorRepository.findById(data.mentorId());
 
         if (procuraMentorado.isPresent() && procuraMentor.isPresent()){
-            var mentoria = new MentoriaModel(data, procuraMentor.get(), procuraMentorado.get());
+            var mentorado = procuraMentorado.get();
+            var mentor = procuraMentor.get();
+            var mentoria = new MentoriaModel(data, mentor, mentorado);
 
             mentoriaRepository.save(mentoria);
+
+            //Serve para atualizar o mentorado e mentor com as mentorias.
+            mentorado.getMentorias().add(mentoria);
+            mentoradoRepository.save(mentorado);
+
+            mentor.getMentorias().add(mentoria);
+            mentorRepository.save(mentor);
 
             return ResponseEntity.ok("Mentoria agendada com sucesso");
         }

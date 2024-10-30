@@ -26,7 +26,7 @@ public class MentorService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<AuthenticationTokenGetDto> cadastrarMentor(MentorPostDTO data){
+    public ResponseEntity<?> cadastrarMentor(MentorPostDTO data){
         Optional<MentorModel> procuraMentor = this.repository.findByEmail(data.email());
 
         if(procuraMentor.isEmpty()){
@@ -38,19 +38,20 @@ public class MentorService {
             return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getEmail(), token));
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("Usuário já cadastrado! " + data.email());
     }
 
     // Login
     public ResponseEntity<AuthenticationTokenGetDto> loginMentor(AuthenticationPostDTO data){
         MentorModel mentor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
 
-        if(passwordEncoder.matches(mentor.getPassword(), data.senha())){
+        if(passwordEncoder.matches(data.senha(), mentor.getPassword())){
             String token = this.tokenService.generateToken(mentor);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getEmail(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
     }
 
     // Retorna todos

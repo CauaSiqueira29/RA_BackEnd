@@ -30,8 +30,8 @@ public class MentoradoModel extends UsuarioModel {
 
     private LocalDate dataNascimento;
 
-    @OneToOne
-    private MentoriaModel mentoria;
+    @OneToMany(mappedBy = "mentorado")
+    private List<MentoriaModel> mentorias;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

@@ -22,7 +22,7 @@ public class InstituicaoController {
     private InstituicaoService service;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<AuthenticationTokenGetDto> postInstituicao(@RequestBody @Valid InstituicaoPostDTO data){
+    public ResponseEntity<?> postInstituicao(@RequestBody @Valid InstituicaoPostDTO data){
         return service.cadastrarInstituicao(data);
     }
 

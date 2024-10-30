@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record MentoriaPostDTO(@NotBlank Long mentorId,
+public record   MentoriaPostDTO(@NotNull Long mentorId,
                               @NotNull LocalDateTime hora,
-                              @NotBlank Long mentoradoId) {
+                              @NotNull Long mentoradoId) {
     
 }

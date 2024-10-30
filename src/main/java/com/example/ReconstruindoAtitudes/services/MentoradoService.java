@@ -26,7 +26,7 @@ public class MentoradoService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<AuthenticationTokenGetDto> cadastrarMentorado(MentoradoPostDTO data){
+    public ResponseEntity<?> cadastrarMentorado(MentoradoPostDTO data){
         Optional<MentoradoModel> procuraAgressor = this.repository.findByEmail(data.email());
 
         if(procuraAgressor.isEmpty()){
@@ -38,7 +38,7 @@ public class MentoradoService {
             return ResponseEntity.ok(new AuthenticationTokenGetDto(agressor.getEmail(), token));
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("Usuário já cadastrado! " + data.email());
     }
 
     // Login

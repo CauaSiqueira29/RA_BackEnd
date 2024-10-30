@@ -31,13 +31,13 @@ public class AuthenticationController {
         var procuraMentor = mentorService.findByEmail(data.email());
 
         if (procuraMentorado.isPresent()){
-            mentoradoService.loginMentorado(data);
+            return mentoradoService.loginMentorado(data);
         }
         if (procuraInstituicao.isPresent()){
-            instituicaoService.loginInstituicao(data);
+            return instituicaoService.loginInstituicao(data);
         }
         if (procuraMentor.isPresent()){
-            mentorService.loginMentor(data);
+            return mentorService.loginMentor(data);
         }
 
         return ResponseEntity.badRequest().build();

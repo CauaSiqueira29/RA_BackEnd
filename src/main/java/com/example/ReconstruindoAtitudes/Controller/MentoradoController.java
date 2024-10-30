@@ -22,7 +22,7 @@ public class MentoradoController {
     private MentoradoService service;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<AuthenticationTokenGetDto> postMentorado(@RequestBody @Valid MentoradoPostDTO data){
+    public ResponseEntity<?> postMentorado(@RequestBody @Valid MentoradoPostDTO data){
         return service.cadastrarMentorado(data);
     }
 
