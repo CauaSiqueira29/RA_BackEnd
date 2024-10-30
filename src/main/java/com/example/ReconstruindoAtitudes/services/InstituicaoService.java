@@ -1,10 +1,10 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Instituicao.InstituicaoTokenGetDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
@@ -26,7 +26,7 @@ public class InstituicaoService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<InstituicaoTokenGetDTO> cadastrarInstituicao(InstituicaoPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> cadastrarInstituicao(InstituicaoPostDTO data){
         Optional<InstituicaoModel> procuraInstituicao = this.repository.findByEmail(data.email());
 
         if(procuraInstituicao.isEmpty()){
@@ -36,7 +36,7 @@ public class InstituicaoService {
             System.out.println("Instituição salva = " + data.email());
 
             String token = this.tokenService.generateToken(instituicao);
-            return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
         }
 
         System.out.println("Instituição já cadastrada = " + data.email());
@@ -44,12 +44,12 @@ public class InstituicaoService {
     }
 
     // Login
-    public ResponseEntity<InstituicaoTokenGetDTO> loginInstituicao(AuthenticationPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> loginInstituicao(AuthenticationPostDTO data){
         InstituicaoModel instituicao = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Instituição não encontrado!"));
 
         if(passwordEncoder.matches(instituicao.getPassword(), data.senha())){
             String token = this.tokenService.generateToken(instituicao);
-            return ResponseEntity.ok(new InstituicaoTokenGetDTO(instituicao.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -105,6 +105,10 @@ public class InstituicaoService {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    public Optional<InstituicaoModel> findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
 }

@@ -1,10 +1,10 @@
 package com.example.ReconstruindoAtitudes.Controller;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoTokenGetDTO;
 import com.example.ReconstruindoAtitudes.services.MentoradoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class MentoradoController {
     private MentoradoService service;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<MentoradoTokenGetDTO> postMentorado(@RequestBody @Valid MentoradoPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> postMentorado(@RequestBody @Valid MentoradoPostDTO data){
         return service.cadastrarMentorado(data);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MentoradoTokenGetDTO> loginMentorado(@RequestBody @Valid AuthenticationPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> loginMentorado(@RequestBody @Valid AuthenticationPostDTO data){
         return service.loginMentorado(data);
     }
 

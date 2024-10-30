@@ -1,10 +1,10 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorTokenGetDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
@@ -26,7 +26,7 @@ public class MentorService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<MentorTokenGetDTO> cadastrarMentor(MentorPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> cadastrarMentor(MentorPostDTO data){
         Optional<MentorModel> procuraMentor = this.repository.findByEmail(data.email());
 
         if(procuraMentor.isEmpty()){
@@ -35,19 +35,19 @@ public class MentorService {
             this.repository.save(mentor);
 
             String token = this.tokenService.generateToken(mentor);
-            return ResponseEntity.ok(new MentorTokenGetDTO(mentor.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().build();
     }
 
     // Login
-    public ResponseEntity<MentorTokenGetDTO> loginMentor(AuthenticationPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> loginMentor(AuthenticationPostDTO data){
         MentorModel mentor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
 
         if(passwordEncoder.matches(mentor.getPassword(), data.senha())){
             String token = this.tokenService.generateToken(mentor);
-            return ResponseEntity.ok(new MentorTokenGetDTO(mentor.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getEmail(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -105,6 +105,10 @@ public class MentorService {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    public Optional<MentorModel> findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
 }

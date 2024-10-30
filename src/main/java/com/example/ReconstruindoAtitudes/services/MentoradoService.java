@@ -1,10 +1,10 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoTokenGetDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
@@ -26,7 +26,7 @@ public class MentoradoService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<MentoradoTokenGetDTO> cadastrarMentorado(MentoradoPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> cadastrarMentorado(MentoradoPostDTO data){
         Optional<MentoradoModel> procuraAgressor = this.repository.findByEmail(data.email());
 
         if(procuraAgressor.isEmpty()){
@@ -35,19 +35,19 @@ public class MentoradoService {
             this.repository.save(agressor);
 
             String token = this.tokenService.generateToken(agressor);
-            return ResponseEntity.ok(new MentoradoTokenGetDTO(agressor.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(agressor.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().build();
     }
 
     // Login
-    public ResponseEntity<MentoradoTokenGetDTO> loginMentorado(AuthenticationPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> loginMentorado(AuthenticationPostDTO data){
         MentoradoModel mentorado = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         if(passwordEncoder.matches(data.senha(), mentorado.getPassword())){
             String token = this.tokenService.generateToken(mentorado);
-            return ResponseEntity.ok(new MentoradoTokenGetDTO(mentorado.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getEmail(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -106,6 +106,10 @@ public class MentoradoService {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    public Optional<MentoradoModel> findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
 }
