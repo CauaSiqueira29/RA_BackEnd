@@ -8,10 +8,9 @@ import java.time.LocalDate;
 public record MentoradoGetDTO(Long id,
                               String nome,
                               String email,
-                              LocalDate dataNascimento,
-                              UserRole role){
+                              LocalDate dataNascimento){
 
     public MentoradoGetDTO(MentoradoModel mentorado){
-        this(mentorado.getId(), mentorado.getNome(), mentorado.getEmail(), mentorado.getDataNascimento(), mentorado.getRole());
+        this(mentorado.getId(), mentorado.getNome(), mentorado.getEmail(), mentorado.getDataNascimento());
     }
 }

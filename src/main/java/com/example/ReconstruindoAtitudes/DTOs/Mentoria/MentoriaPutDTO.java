@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record MentoriaPutDTO(@NotNull LocalDateTime hora) {
+public record MentoriaPutDTO(@NotNull LocalDateTime diaHora) {
+
 }

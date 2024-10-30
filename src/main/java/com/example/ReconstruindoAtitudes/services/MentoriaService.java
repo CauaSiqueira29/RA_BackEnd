@@ -3,7 +3,6 @@ package com.example.ReconstruindoAtitudes.services;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPutDTO;
-import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Model.MentoriaModel;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
@@ -72,8 +71,8 @@ public class MentoriaService {
         if (proocuraMentoria.isPresent()){
             var mentoria = proocuraMentoria.get();
 
-            if(data.hora() != null){
-                mentoria.setHora(data.hora());
+            if(data.diaHora() != null){
+                mentoria.setDiaHora(data.diaHora());
             }
 
             mentoriaRepository.save(mentoria);
