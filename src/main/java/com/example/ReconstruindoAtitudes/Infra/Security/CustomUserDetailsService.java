@@ -2,6 +2,7 @@ package com.example.ReconstruindoAtitudes.Infra.Security;
 
 import com.example.ReconstruindoAtitudes.Model.UsuarioModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
+import com.example.ReconstruindoAtitudes.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +16,11 @@ import java.util.ArrayList;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private MentoradoRepository repository;
+    private UsuarioService service;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UsuarioModel usuario = this.repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+        UsuarioModel usuario = this.service.buscarPorEmail(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
         return new User(usuario.getUsername(), usuario.getPassword(), new ArrayList<>());
     }
 

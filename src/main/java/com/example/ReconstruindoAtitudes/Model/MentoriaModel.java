@@ -1,16 +1,11 @@
 package com.example.ReconstruindoAtitudes.Model;
 
 
-
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -29,19 +24,16 @@ public class MentoriaModel {
     @JoinColumn(name = "mentor_id")
     private MentorModel mentor;
 
-    private LocalTime hora;
+    private LocalDateTime hora;
 
     @OneToOne
-    private MentoradoModel mentoradoNome;
+    @JoinColumn(name = "mentorado_id")
+    private MentoradoModel mentorado;
 
-    @OneToOne
-    private MentoradoModel mentoradoContato;
-
-    public MentoriaModel(MentoriaPostDTO data){
-        this.mentor = data.mentor();
+    public MentoriaModel(MentoriaPostDTO data, MentorModel mentor, MentoradoModel mentorado){
+        this.mentor = mentor;
         this.hora = data.hora();
-        this.mentoradoNome = data.mentoradoNome();
-        this.mentoradoContato = data.mentoradoContato();
+        this.mentorado = mentorado;
     }
 
 }
