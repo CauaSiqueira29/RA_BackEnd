@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("login")
+@RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
 
@@ -24,7 +24,7 @@ public class AuthenticationController {
     @Autowired
     private InstituicaoService instituicaoService;
 
-    @PostMapping()
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationTokenGetDto> loginUsuarios(@RequestBody @Valid AuthenticationPostDTO data){
         var procuraMentorado = mentoradoService.findByEmail(data.email());
         var procuraInstituicao = instituicaoService.findByEmail(data.email());
