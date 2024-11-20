@@ -14,6 +14,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("anamnese")
+@CrossOrigin("**")
 public class AnamneseController {
 
     @Autowired

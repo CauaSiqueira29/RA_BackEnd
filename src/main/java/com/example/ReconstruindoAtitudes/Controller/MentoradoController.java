@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("mentorado")
-@CrossOrigin(origins = "*")
+@CrossOrigin("**")
 public class MentoradoController {
 
     @Autowired

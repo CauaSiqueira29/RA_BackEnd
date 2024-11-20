@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "anmeneses")
+@Table(name = "anamneses")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,6 +18,9 @@ public class AnamneseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @OneToOne
+    private MentoradoModel mentorado;
 
     private String pergunta1;
 
@@ -57,7 +60,8 @@ public class AnamneseModel {
 
     private String pergunta19;
 
-    public AnamneseModel(AnamnesePostDTO data){
+    public AnamneseModel(AnamnesePostDTO data, MentoradoModel mentorado){
+        this.mentorado = mentorado;
         this.pergunta1 = data.pergunta1();
         this.pergunta2 = data.pergunta2();
         this.pergunta3 = data.pergunta3();

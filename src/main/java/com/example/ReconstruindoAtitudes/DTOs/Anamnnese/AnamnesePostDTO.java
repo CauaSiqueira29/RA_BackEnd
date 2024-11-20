@@ -1,8 +1,10 @@
 package com.example.ReconstruindoAtitudes.DTOs.Anamnnese;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record AnamnesePostDTO(@NotBlank String pergunta1,
+public record AnamnesePostDTO(@NotNull Long mentoradoId,
+                              @NotBlank String pergunta1,
                               @NotBlank String pergunta2,
                               @NotBlank String pergunta3,
                               @NotBlank String pergunta4,

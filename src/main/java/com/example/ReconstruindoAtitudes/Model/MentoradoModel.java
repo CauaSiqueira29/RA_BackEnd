@@ -30,6 +30,9 @@ public class MentoradoModel extends UsuarioModel {
 
     private LocalDate dataNascimento;
 
+    @OneToOne
+    private AnamneseModel anamnese;
+
     @OneToMany(mappedBy = "mentorado")
     private List<MentoriaModel> mentorias;
 
