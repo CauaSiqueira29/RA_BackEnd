@@ -27,15 +27,15 @@ public class MentoradoService {
 
     // Cadastro
     public ResponseEntity<?> cadastrarMentorado(MentoradoPostDTO data){
-        Optional<MentoradoModel> procuraAgressor = this.repository.findByEmail(data.email());
+        Optional<MentoradoModel> procuraMentorado = this.repository.findByEmail(data.email());
 
-        if(procuraAgressor.isEmpty()){
+        if(procuraMentorado.isEmpty()){
             var senhaEncriptada = passwordEncoder.encode(data.senha());
-            MentoradoModel agressor = new MentoradoModel(data, senhaEncriptada);
-            this.repository.save(agressor);
+            MentoradoModel mentorado = new MentoradoModel(data, senhaEncriptada);
+            this.repository.save(mentorado);
 
-            String token = this.tokenService.generateToken(agressor);
-            return ResponseEntity.ok(new AuthenticationTokenGetDto(agressor.getEmail(), token));
+            String token = this.tokenService.generateToken(mentorado);
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getEmail(), token));
         }
 
         return ResponseEntity.badRequest().body("Usuário já cadastrado! " + data.email());
@@ -73,16 +73,20 @@ public class MentoradoService {
 
     // Atualiza
     public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id){
-        var proocuraMentorado = repository.findById(id);
+        var procuraMentorado = repository.findById(id);
 
-         if (proocuraMentorado.isPresent()){
-             var mentorado = proocuraMentorado.get();
+         if (procuraMentorado.isPresent()){
+             var mentorado = procuraMentorado.get();
 
              if(data.nome() != null){
                  mentorado.setNome(data.nome());
              }
              if(data.email() != null){
                  mentorado.setEmail(data.email());
+             }
+             if (data.senha() != null) {
+                 var senhaEncriptada = passwordEncoder.encode(data.senha());
+                 mentorado.setSenha(senhaEncriptada);
              }
 
              repository.save(mentorado);
