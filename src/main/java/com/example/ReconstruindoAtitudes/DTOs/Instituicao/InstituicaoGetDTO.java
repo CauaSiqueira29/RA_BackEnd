@@ -2,9 +2,12 @@ package com.example.ReconstruindoAtitudes.DTOs.Instituicao;
 
 import com.example.ReconstruindoAtitudes.Model.InstituicaoModel;
 
-public record InstituicaoGetDTO( String cnpj) {
+public record InstituicaoGetDTO( Long IesId,
+                                 String nome,
+                                 String cnpj,
+                                 String email) {
 
     public InstituicaoGetDTO(InstituicaoModel instituicao){
-        this(instituicao.getCnpj());
+        this(instituicao.getId(), instituicao.getCnpj(), instituicao.getNome(), instituicao.getEmail());
     }
 }

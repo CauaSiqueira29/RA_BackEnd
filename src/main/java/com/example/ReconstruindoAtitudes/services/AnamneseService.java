@@ -21,7 +21,8 @@ public class AnamneseService {
     @Autowired
     private MentoradoRepository mentoradoRepository;
 
-    public ResponseEntity<AnamneseModel> cadastrarAnamnese(AnamnesePostDTO data) {
+    // Registra anamnese
+    public ResponseEntity<?> cadastrarAnamnese(AnamnesePostDTO data) {
         var procuraMentorado = mentoradoRepository.findById(data.mentoradoId());
 
         if (procuraMentorado.isEmpty()) {
@@ -36,13 +37,15 @@ public class AnamneseService {
         anamneseRepository.save(anamnese);
         mentoradoRepository.save(mentorado);
 
-        return ResponseEntity.ok().body(anamnese);
+        return ResponseEntity.ok().body(new AnamneseGetDTO(anamnese));
     }
 
+    // Retorna anamnese
     public ResponseEntity<List<AnamneseGetDTO>> listarAnamneses() {
         return ResponseEntity.ok(anamneseRepository.findAll().stream().map(AnamneseGetDTO::new).toList());
     }
 
+    // Retorna anamnese por id
     public ResponseEntity<AnamneseGetDTO> retornaAnamnesePorId(Long id) {
         var procuraAnamnese = anamneseRepository.findById(id);
 
@@ -55,6 +58,7 @@ public class AnamneseService {
         throw new RuntimeException("Anamnese com id: " + id + " não encontrada!");
     }
 
+    // Deleta anamnese
     public ResponseEntity<AnamneseGetDTO> deletaAnamnese(Long id) {
         var procuraAnamnese = anamneseRepository.findById(id).orElseThrow(() -> new RuntimeException("Anamnese com id: " + id + " não encontrada"));
         MentoradoModel mentorado = mentoradoRepository.findByAnamnese(procuraAnamnese);

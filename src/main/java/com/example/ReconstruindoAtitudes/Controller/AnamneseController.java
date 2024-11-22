@@ -22,7 +22,7 @@ public class AnamneseController {
 
 
     @PostMapping("/registrar")
-    public ResponseEntity<AnamneseModel> resgistrarAnamnese(@RequestBody @Valid AnamnesePostDTO data){
+    public ResponseEntity<?> resgistrarAnamnese(@RequestBody @Valid AnamnesePostDTO data){
         return service.cadastrarAnamnese(data);
     }
 

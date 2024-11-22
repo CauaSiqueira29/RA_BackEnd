@@ -1,9 +1,10 @@
 package com.example.ReconstruindoAtitudes.DTOs.Anamnnese;
 
+import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoGetDTO;
 import com.example.ReconstruindoAtitudes.Model.AnamneseModel;
 import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 
-public record AnamneseGetDTO (MentoradoModel mentoradoModel,
+public record AnamneseGetDTO (MentoradoGetDTO mentorado,
                               String pergunta1,
                               String pergunta2,
                               String pergunta3,
@@ -25,7 +26,7 @@ public record AnamneseGetDTO (MentoradoModel mentoradoModel,
                               String pergunta19){
 
     public AnamneseGetDTO(AnamneseModel anamnese){
-        this(anamnese.getMentorado(), anamnese.getPergunta1(), anamnese.getPergunta2(), anamnese.getPergunta3(), anamnese.getPergunta4(),
+        this(new MentoradoGetDTO(anamnese.getMentorado()), anamnese.getPergunta1(), anamnese.getPergunta2(), anamnese.getPergunta3(), anamnese.getPergunta4(),
                 anamnese.getPergunta5(), anamnese.getPergunta6(), anamnese.getPergunta7(), anamnese.getPergunta8(),
                 anamnese.getPergunta9(), anamnese.getPergunta10(), anamnese.getPergunta11(), anamnese.getPergunta12(),
                 anamnese.getPergunta13(), anamnese.getPergunta14(), anamnese.getPergunta15(), anamnese.getPergunta16(),

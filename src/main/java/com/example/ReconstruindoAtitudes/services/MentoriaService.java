@@ -25,39 +25,37 @@ public class MentoriaService {
     @Autowired
     private MentorRepository mentorRepository;
 
-    public ResponseEntity<String> agendarMentoria(MentoriaPostDTO data){
-        var procuraMentorado = mentoradoRepository.findById(data.mentoradoId());
-        var procuraMentor = mentorRepository.findById(data.mentorId());
+    // Agenda mentoria
+    public ResponseEntity<?> agendarMentoria(MentoriaPostDTO data) {
+        var mentorado = mentoradoRepository.findById(data.mentoradoId()).orElseThrow(() ->
+                new RuntimeException("Mentorado com id: " + data.mentoradoId() + " não encontrado"));
+        var mentor = mentorRepository.findById(data.mentorId()).orElseThrow(() ->
+                new RuntimeException("Mentor com id: " + data.mentorId() + " não encontrado"));
 
-        if (procuraMentorado.isPresent() && procuraMentor.isPresent()){
-            var mentorado = procuraMentorado.get();
-            var mentor = procuraMentor.get();
-            var mentoria = new MentoriaModel(data, mentor, mentorado);
+        var mentoria = new MentoriaModel(data, mentor, mentorado);
 
-            mentoriaRepository.save(mentoria);
+        mentoriaRepository.save(mentoria);
 
-            //Serve para atualizar o mentorado e mentor com as mentorias.
-            mentorado.getMentorias().add(mentoria);
-            mentoradoRepository.save(mentorado);
+        //Serve para atualizar o mentorado e mentor com as mentorias.
+        mentorado.getMentorias().add(mentoria);
+        mentoradoRepository.save(mentorado);
 
-            mentor.getMentorias().add(mentoria);
-            mentorRepository.save(mentor);
+        mentor.getMentorias().add(mentoria);
+        mentorRepository.save(mentor);
 
-            return ResponseEntity.ok("Mentoria agendada com sucesso");
-        }
-
-        return ResponseEntity.badRequest().body("Não foi encontrado um mentorado com id: " + data.mentoradoId() +
-                " ou um mentor com id: " + data.mentorId());
+        return ResponseEntity.ok(new MentoriaGetDTO(mentoria));
     }
 
-    public ResponseEntity<List<MentoriaGetDTO>> listarMentorias(){
+    // Retorna mentorias
+    public ResponseEntity<List<MentoriaGetDTO>> listarMentorias() {
         return ResponseEntity.ok(mentoriaRepository.findAll().stream().map(MentoriaGetDTO::new).toList());
     }
 
-    public ResponseEntity<MentoriaGetDTO> retornaMentoriaPorId(Long id){
+    // Retorna mentorias por id
+    public ResponseEntity<MentoriaGetDTO> retornaMentoriaPorId(Long id) {
         var procuraMentoria = mentoriaRepository.findById(id);
 
-        if(procuraMentoria.isPresent()){
+        if (procuraMentoria.isPresent()) {
             var mentoria = procuraMentoria.get();
             return ResponseEntity.ok().body(new MentoriaGetDTO(mentoria));
         }
@@ -65,13 +63,14 @@ public class MentoriaService {
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<MentoriaGetDTO> atualizarMentoria(MentoriaPutDTO data, Long id){
+    // Atualiza mentoria
+    public ResponseEntity<MentoriaGetDTO> atualizarMentoria(MentoriaPutDTO data, Long id) {
         var proocuraMentoria = mentoriaRepository.findById(id);
 
-        if (proocuraMentoria.isPresent()){
+        if (proocuraMentoria.isPresent()) {
             var mentoria = proocuraMentoria.get();
 
-            if(data.diaHora() != null){
+            if (data.diaHora() != null) {
                 mentoria.setDiaHora(data.diaHora());
             }
 
@@ -82,10 +81,11 @@ public class MentoriaService {
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<MentoriaGetDTO> deletaMentoria(Long id){
+    // Deleta mentoria
+    public ResponseEntity<MentoriaGetDTO> deletaMentoria(Long id) {
         var procuraMentoria = mentoriaRepository.findById(id);
 
-        if (procuraMentoria.isPresent()){
+        if (procuraMentoria.isPresent()) {
             var mentoria = procuraMentoria.get();
 
             mentoriaRepository.deleteById(id);

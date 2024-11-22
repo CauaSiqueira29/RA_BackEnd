@@ -26,10 +26,10 @@ public class InstituicaoService {
     private final TokenService tokenService;
 
     // Cadastro
-    public ResponseEntity<?> cadastrarInstituicao(InstituicaoPostDTO data){
+    public ResponseEntity<?> cadastrarInstituicao(InstituicaoPostDTO data) {
         Optional<InstituicaoModel> procuraInstituicao = this.repository.findByEmail(data.email());
 
-        if(procuraInstituicao.isEmpty()){
+        if (procuraInstituicao.isEmpty()) {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
             InstituicaoModel instituicao = new InstituicaoModel(data, senhaEncriptada);
             this.repository.save(instituicao);
@@ -42,10 +42,10 @@ public class InstituicaoService {
     }
 
     // Login
-    public ResponseEntity<AuthenticationTokenGetDto> loginInstituicao(AuthenticationPostDTO data){
+    public ResponseEntity<AuthenticationTokenGetDto> loginInstituicao(AuthenticationPostDTO data) {
         InstituicaoModel instituicao = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Instituição não encontrado!"));
 
-        if(passwordEncoder.matches(data.senha(), instituicao.getPassword())){
+        if (passwordEncoder.matches(data.senha(), instituicao.getPassword())) {
             String token = this.tokenService.generateToken(instituicao);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
         }
@@ -55,16 +55,16 @@ public class InstituicaoService {
     }
 
     // Retorna todas
-    public ResponseEntity<List<InstituicaoGetDTO>> listarInstituicoes(){
+    public ResponseEntity<List<InstituicaoGetDTO>> listarInstituicoes() {
 
         return ResponseEntity.ok(repository.findAll().stream().map(InstituicaoGetDTO::new).toList());
     }
 
     // Retorna por um por ID
-    public ResponseEntity<InstituicaoGetDTO> retornaInstituicaoPorId(Long id){
+    public ResponseEntity<InstituicaoGetDTO> retornaInstituicaoPorId(Long id) {
         var procuraInstituicao = repository.findById(id);
 
-        if(procuraInstituicao.isPresent()){
+        if (procuraInstituicao.isPresent()) {
             var instituicao = procuraInstituicao.get();
 
             return ResponseEntity.ok().body(new InstituicaoGetDTO(instituicao));
@@ -74,27 +74,29 @@ public class InstituicaoService {
     }
 
     // Atualiza
-    public ResponseEntity<InstituicaoGetDTO> atualizarInstituicao(InstituicaoPutDTO data, Long id){
-        var procuraInstituicao = repository.findById(id);
+    public ResponseEntity<InstituicaoGetDTO> atualizarInstituicao(InstituicaoPutDTO data, Long id) {
+        var instituicao = repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Instituição com id: " + id + " não encontrado"));
 
-        if (procuraInstituicao.isPresent()){
-            var instituicao = procuraInstituicao.get();
-            if (data.nome() != null){
-                instituicao.setNome(data.nome());
-            }
 
-            return ResponseEntity.ok().body(new InstituicaoGetDTO(instituicao));
+        if (data.nome() != null) {
+            instituicao.setNome(data.nome());
+        }
+        if(data.senha() != null){
+            var senhaEncriptada = passwordEncoder.encode(data.senha());
+            instituicao.setSenha(senhaEncriptada);
         }
 
-        return ResponseEntity.notFound().build();
+        repository.save(instituicao);
+        return ResponseEntity.ok().body(new InstituicaoGetDTO(instituicao));
 
     }
 
     // Deleta
-    public ResponseEntity<InstituicaoGetDTO> deletaInstituicaoPorId(Long id){
+    public ResponseEntity<InstituicaoGetDTO> deletaInstituicaoPorId(Long id) {
         var procuraInstituicao = repository.findById(id);
 
-        if (procuraInstituicao.isPresent()){
+        if (procuraInstituicao.isPresent()) {
             var instituicao = procuraInstituicao.get();
 
             repository.deleteById(id);
@@ -106,7 +108,7 @@ public class InstituicaoService {
 
     }
 
-    public Optional<InstituicaoModel> findByEmail(String email){
+    public Optional<InstituicaoModel> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 

@@ -21,7 +21,7 @@ public class MentoriaController {
     private MentoriaService service;
 
     @PostMapping("/agendar")
-    public ResponseEntity<String> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
+    public ResponseEntity<?> agendarMentoria(@RequestBody @Valid MentoriaPostDTO data) {
         return service.agendarMentoria(data);
     }
 
