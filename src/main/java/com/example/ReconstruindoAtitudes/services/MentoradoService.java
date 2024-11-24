@@ -5,6 +5,7 @@ import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationToken
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPutDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoSenhaDto;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
@@ -72,7 +73,7 @@ public class MentoradoService {
     }
 
     // Atualiza
-    public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id, String email) {
+    public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id) {
         var mentorado = repository.findById(id).orElseThrow(() ->
                 new RuntimeException("Mentor com id: " + id + " não encontrado"));
 
@@ -92,10 +93,15 @@ public class MentoradoService {
 
     }
 
-//    public ResponseEntity<?> esqueceuSenha(MentoradoSenhaDto data){
-//        var mentorado
-//
-//    }
+    public ResponseEntity<?> esqueceuSenha(MentoradoSenhaDto data){
+        var mentorado = repository.findByEmail(data.email()).orElseThrow(() ->
+                new RuntimeException("Mentorado com email: '" + data.email() + "' não encontrado!"));
+
+        var senhaEncriptada = passwordEncoder.encode(data.senha());
+        mentorado.setSenha(senhaEncriptada);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     // Deleta
     public ResponseEntity<MentoradoGetDTO> deletaMentorado(Long id) {
