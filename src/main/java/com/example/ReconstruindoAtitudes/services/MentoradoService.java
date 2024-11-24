@@ -1,13 +1,13 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationSenhaPutDto;
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoGetDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPostDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoPutDTO;
-import com.example.ReconstruindoAtitudes.DTOs.Mentorado.MentoradoSenhaDto;
+import com.example.ReconstruindoAtitudes.DTOs.Mentorado.*;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
+import com.example.ReconstruindoAtitudes.Model.MentorModel;
 import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
+import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,18 +22,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MentoradoService {
 
-    private final MentoradoRepository repository;
+    private final MentoradoRepository mentoradoRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final MentorRepository mentorRepository;
 
     // Cadastro
     public ResponseEntity<?> cadastrarMentorado(MentoradoPostDTO data) {
-        Optional<MentoradoModel> procuraMentorado = this.repository.findByEmail(data.email());
+        Optional<MentoradoModel> procuraMentorado = this.mentoradoRepository.findByEmail(data.email());
 
         if (procuraMentorado.isEmpty()) {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
             MentoradoModel mentorado = new MentoradoModel(data, senhaEncriptada);
-            this.repository.save(mentorado);
+            this.mentoradoRepository.save(mentorado);
 
             String token = this.tokenService.generateToken(mentorado);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getId(), mentorado.getEmail(), mentorado.getRole(), token));
@@ -44,7 +45,7 @@ public class MentoradoService {
 
     // Login
     public ResponseEntity<AuthenticationTokenGetDto> loginMentorado(AuthenticationPostDTO data) {
-        MentoradoModel mentorado = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+        MentoradoModel mentorado = this.mentoradoRepository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         if (passwordEncoder.matches(data.senha(), mentorado.getPassword())) {
             String token = this.tokenService.generateToken(mentorado);
@@ -57,12 +58,12 @@ public class MentoradoService {
 
     // Retorna todos
     public ResponseEntity<List<MentoradoGetDTO>> listarMentorados() {
-        return ResponseEntity.ok(repository.findAll().stream().map(MentoradoGetDTO::new).toList());
+        return ResponseEntity.ok(mentoradoRepository.findAll().stream().map(MentoradoGetDTO::new).toList());
     }
 
     // Retorna por um por ID
     public ResponseEntity<MentoradoGetDTO> retornaMentoradoPorId(Long id) {
-        var procuraMentorado = repository.findById(id);
+        var procuraMentorado = mentoradoRepository.findById(id);
 
         if (procuraMentorado.isPresent()) {
             var mentorado = procuraMentorado.get();
@@ -74,7 +75,7 @@ public class MentoradoService {
 
     // Atualiza
     public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id) {
-        var mentorado = repository.findById(id).orElseThrow(() ->
+        var mentorado = mentoradoRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Mentor com id: " + id + " não encontrado"));
 
         if (data.nome() != null) {
@@ -88,29 +89,31 @@ public class MentoradoService {
             mentorado.setSenha(senhaEncriptada);
         }
 
-        repository.save(mentorado);
+        mentoradoRepository.save(mentorado);
         return ResponseEntity.ok().body(new MentoradoGetDTO(mentorado));
 
     }
 
-    public ResponseEntity<?> esqueceuSenha(MentoradoSenhaDto data){
-        var mentorado = repository.findByEmail(data.email()).orElseThrow(() ->
+    // Esqueceu a senha
+    public ResponseEntity<?> esqueceuSenha(AuthenticationSenhaPutDto data){
+        var mentorado = mentoradoRepository.findByEmail(data.email()).orElseThrow(() ->
                 new RuntimeException("Mentorado com email: '" + data.email() + "' não encontrado!"));
 
         var senhaEncriptada = passwordEncoder.encode(data.senha());
         mentorado.setSenha(senhaEncriptada);
+        mentoradoRepository.save(mentorado);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Deleta
     public ResponseEntity<MentoradoGetDTO> deletaMentorado(Long id) {
-        var procuraMentorado = repository.findById(id);
+        var procuraMentorado = mentoradoRepository.findById(id);
 
         if (procuraMentorado.isPresent()) {
             var mentorado = procuraMentorado.get();
 
-            repository.deleteById(id);
+            mentoradoRepository.deleteById(id);
 
             return ResponseEntity.ok().body(new MentoradoGetDTO(mentorado));
         }
@@ -120,7 +123,7 @@ public class MentoradoService {
     }
 
     public Optional<MentoradoModel> findByEmail(String email) {
-        return repository.findByEmail(email);
+        return mentoradoRepository.findByEmail(email);
     }
 
 }

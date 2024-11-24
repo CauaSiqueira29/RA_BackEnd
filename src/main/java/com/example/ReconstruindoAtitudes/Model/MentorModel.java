@@ -1,6 +1,7 @@
 package com.example.ReconstruindoAtitudes.Model;
 
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Instituicao.TransformaEmMentorPostDto;
 import com.example.ReconstruindoAtitudes.Model.Role.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class MentorModel extends UsuarioModel{
     private Long id;
     private String name;
     private String bio;
+    private boolean foiMentorado;
 
     @OneToMany(mappedBy = "mentor")
     private List<MentoriaModel> mentorias;
@@ -36,6 +38,16 @@ public class MentorModel extends UsuarioModel{
         this.email = data.email();
         this.senha = senha;
         this.role = UserRole.MENTOR;
+        this.foiMentorado = false;
+    }
+
+    public MentorModel(TransformaEmMentorPostDto data, MentoradoModel mentorado) {
+        this.name = mentorado.getNome();
+        this.bio = data.bio();
+        this.email = mentorado.getEmail();
+        this.senha = mentorado.getSenha();
+        this.role = UserRole.MENTOR;
+        this.foiMentorado = true;
     }
 
     @Override

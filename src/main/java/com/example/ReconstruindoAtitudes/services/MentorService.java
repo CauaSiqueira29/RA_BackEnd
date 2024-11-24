@@ -1,6 +1,7 @@
 package com.example.ReconstruindoAtitudes.services;
 
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationPostDTO;
+import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationSenhaPutDto;
 import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationTokenGetDto;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
@@ -27,7 +28,7 @@ public class MentorService {
 
     // Cadastro
     public ResponseEntity<?> cadastrarMentor(MentorPostDTO data) {
-        Optional<MentorModel> procuraMentor = this.repository.findByEmail(data.email());
+        var procuraMentor = repository.findByEmail(data.email());
 
         if (procuraMentor.isEmpty()) {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
@@ -43,7 +44,7 @@ public class MentorService {
 
     // Login
     public ResponseEntity<AuthenticationTokenGetDto> loginMentor(AuthenticationPostDTO data) {
-        MentorModel mentor = this.repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
+        MentorModel mentor = repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
 
         if (passwordEncoder.matches(data.senha(), mentor.getPassword())) {
             String token = this.tokenService.generateToken(mentor);
@@ -52,6 +53,18 @@ public class MentorService {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
+    }
+
+    // Esqueceu a senha
+    public ResponseEntity<?> esqueceuSenha(AuthenticationSenhaPutDto data){
+        var mentor = repository.findByEmail(data.email()).orElseThrow(() ->
+                new RuntimeException("Mentor com email: '" + data.email() + "' não encontrado!"));
+
+        var senhaEncriptada = passwordEncoder.encode(data.senha());
+        mentor.setSenha(senhaEncriptada);
+        repository.save(mentor);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Retorna todos
