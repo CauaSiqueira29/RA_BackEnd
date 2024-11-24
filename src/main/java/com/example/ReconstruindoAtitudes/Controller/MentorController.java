@@ -33,9 +33,8 @@ public class MentorController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<MentorGetDTO>> getMentores() {
-        service.listarMentores();
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<?> getMentores() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarMentores());
     }
 
     @GetMapping("/listar/{id}")
