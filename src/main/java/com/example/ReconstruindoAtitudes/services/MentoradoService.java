@@ -72,7 +72,7 @@ public class MentoradoService {
     }
 
     // Atualiza
-    public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id) {
+    public ResponseEntity<MentoradoGetDTO> atualizarMentorado(MentoradoPutDTO data, Long id, String email) {
         var mentorado = repository.findById(id).orElseThrow(() ->
                 new RuntimeException("Mentor com id: " + id + " não encontrado"));
 
@@ -91,6 +91,11 @@ public class MentoradoService {
         return ResponseEntity.ok().body(new MentoradoGetDTO(mentorado));
 
     }
+
+//    public ResponseEntity<?> esqueceuSenha(MentoradoSenhaDto data){
+//        var mentorado
+//
+//    }
 
     // Deleta
     public ResponseEntity<MentoradoGetDTO> deletaMentorado(Long id) {
