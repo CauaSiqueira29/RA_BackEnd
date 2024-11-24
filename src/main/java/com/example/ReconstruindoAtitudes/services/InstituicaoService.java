@@ -35,7 +35,7 @@ public class InstituicaoService {
             this.repository.save(instituicao);
 
             String token = this.tokenService.generateToken(instituicao);
-            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getId(), instituicao.getEmail(), instituicao.getRole(), token));
         }
 
         return ResponseEntity.badRequest().body("Instituição já cadastrada! " + data.email());
@@ -47,7 +47,7 @@ public class InstituicaoService {
 
         if (passwordEncoder.matches(data.senha(), instituicao.getPassword())) {
             String token = this.tokenService.generateToken(instituicao);
-            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(instituicao.getId(), instituicao.getEmail(), instituicao.getRole(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

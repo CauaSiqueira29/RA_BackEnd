@@ -30,7 +30,7 @@ public class InstituicaoModel extends UsuarioModel{
     private String cnpj;
 
     public InstituicaoModel(InstituicaoPostDTO data, String senha){
-        this.nome = data.nome();
+        this.nome = data.nomeIes();
         this.cnpj = data.cnpj();
         this.email = data.email();
         this.senha = senha;

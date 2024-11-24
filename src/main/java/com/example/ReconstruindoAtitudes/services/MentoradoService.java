@@ -35,7 +35,7 @@ public class MentoradoService {
             this.repository.save(mentorado);
 
             String token = this.tokenService.generateToken(mentorado);
-            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getId(), mentorado.getEmail(), mentorado.getRole(), token));
         }
 
         return ResponseEntity.badRequest().body("Usuário já cadastrado! " + data.email());
@@ -47,7 +47,7 @@ public class MentoradoService {
 
         if (passwordEncoder.matches(data.senha(), mentorado.getPassword())) {
             String token = this.tokenService.generateToken(mentorado);
-            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getEmail(), token));
+            return ResponseEntity.ok(new AuthenticationTokenGetDto(mentorado.getId(), mentorado.getEmail(), mentorado.getRole(), token));
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

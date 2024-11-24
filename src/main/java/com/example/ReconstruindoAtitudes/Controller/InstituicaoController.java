@@ -31,6 +31,7 @@ public class InstituicaoController {
         return service.loginInstituicao(data);
     }
 
+    
     @GetMapping("/listar")
     public ResponseEntity<List<InstituicaoGetDTO>> getInstituicao(){
         return service.listarInstituicoes();
