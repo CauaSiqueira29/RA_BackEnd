@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/instituicao/{id}").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.DELETE, "/instituicao/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/mentor/cadastro").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/mentor/listar").hasAnyRole("INSTITUICAO", "MENTORADO")
+                        .requestMatchers(HttpMethod.GET, "/mentor/listar").permitAll()
                         .requestMatchers(HttpMethod.GET, "/mentor/listar/{id}").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.PUT, "/mentor/{id}").hasRole("MENTOR")
                         .requestMatchers(HttpMethod.DELETE, "/mentor/{id}").hasRole("INSTITUICAO")
