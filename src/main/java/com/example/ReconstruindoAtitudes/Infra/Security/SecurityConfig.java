@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/mentorado/cadastro").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/auth/EsqueceuSenha").permitAll()
                         .requestMatchers(HttpMethod.GET, "/mentorado/listar").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.GET, "/mentorado/listar/{id}").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.PUT, "/mentorado/{id}").hasRole("MENTORADO")
