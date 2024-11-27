@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class MentorModel extends UsuarioModel{
             joinColumns = @JoinColumn(name = "mentor_id"),
             inverseJoinColumns = @JoinColumn(name = "instituicao_id")
     )
-    private List<InstituicaoModel> instituicoes;
+    private List<InstituicaoModel> instituicoes = new ArrayList<>();
 
     @OneToMany(mappedBy = "mentor")
     private List<MentoriaModel> mentorias;
