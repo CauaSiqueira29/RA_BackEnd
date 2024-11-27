@@ -64,6 +64,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/anamnese/listar").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.GET, "/anamnese/listar/{id}").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.DELETE, "/anamnese/{id}").hasRole("INSTITUICAO")
+                        .requestMatchers(HttpMethod.POST, "/horario/cadastrar").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.GET, "/horario/retorna/{mentorId}").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.PUT, "/horario/atualiza/{id}").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/horario/deletar/{id}").hasRole("MENTOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter(), UsernamePasswordAuthenticationFilter.class);
