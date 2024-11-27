@@ -29,16 +29,25 @@ public class MentorModel extends UsuarioModel{
     private String bio;
     private boolean foiMentorado;
 
+    @ManyToMany
+    @JoinTable(
+            name = "mentor_instituicao",
+            joinColumns = @JoinColumn(name = "mentor_id"),
+            inverseJoinColumns = @JoinColumn(name = "instituicao_id")
+    )
+    private List<InstituicaoModel> instituicoes;
+
     @OneToMany(mappedBy = "mentor")
     private List<MentoriaModel> mentorias;
 
-    public MentorModel(MentorPostDTO data, String senha){
+    public MentorModel(MentorPostDTO data, String senha, InstituicaoModel instituicao){
         this.name = data.nome();
         this.bio = data.bio();
         this.email = data.email();
         this.senha = senha;
         this.role = UserRole.MENTOR;
         this.foiMentorado = false;
+        this.instituicoes.add(instituicao);
     }
 
     public MentorModel(TransformaEmMentorPostDto data, MentoradoModel mentorado) {

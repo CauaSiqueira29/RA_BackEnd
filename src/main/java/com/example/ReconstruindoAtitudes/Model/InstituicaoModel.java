@@ -29,6 +29,12 @@ public class InstituicaoModel extends UsuarioModel{
 
     private String cnpj;
 
+    @OneToMany(mappedBy = "instituicao")
+    private List<MentoradoModel> mentorados;
+
+    @ManyToMany(mappedBy = "instituicoes")
+    private List<MentorModel> mentores;
+
     public InstituicaoModel(InstituicaoPostDTO data, String senha){
         this.nome = data.nomeIes();
         this.cnpj = data.cnpj();

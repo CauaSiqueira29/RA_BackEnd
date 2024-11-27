@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public record MentoradoPostDTO(@NotBlank String nome,
                                @NotBlank @Email(message = "E-mail Inválido") String email,
+                               @NotNull Long instituicaoId,
                                @NotNull LocalDate dataNascimento,
                                @NotBlank String senha){
 }

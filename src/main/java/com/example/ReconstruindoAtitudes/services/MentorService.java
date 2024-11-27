@@ -8,6 +8,7 @@ import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPutDTO;
 import com.example.ReconstruindoAtitudes.Infra.Security.TokenService;
 import com.example.ReconstruindoAtitudes.Model.MentorModel;
+import com.example.ReconstruindoAtitudes.Repository.InstituicaoRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MentorService {
 
-    private final MentorRepository repository;
+    private final MentorRepository mentorRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final InstituicaoRepository instituicaoRepository;
 
     // Cadastro
     public ResponseEntity<?> cadastrarMentor(MentorPostDTO data) {
-        var procuraMentor = repository.findByEmail(data.email());
+        var procuraMentor = mentorRepository.findByEmail(data.email());
+        var instituicao = instituicaoRepository.findById(data.instituicaoId()).orElseThrow(() ->
+                new RuntimeException("Instituição com id: '" + data.instituicaoId() + "' não encontrada!"));
 
         if (procuraMentor.isEmpty()) {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
-            MentorModel mentor = new MentorModel(data, senhaEncriptada);
-            this.repository.save(mentor);
+            MentorModel mentor = new MentorModel(data, senhaEncriptada, instituicao);
+            this.mentorRepository.save(mentor);
 
             String token = this.tokenService.generateToken(mentor);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getId(), mentor.getEmail(), mentor.getRole(), token));
@@ -44,7 +48,7 @@ public class MentorService {
 
     // Login
     public ResponseEntity<AuthenticationTokenGetDto> loginMentor(AuthenticationPostDTO data) {
-        MentorModel mentor = repository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
+        MentorModel mentor = mentorRepository.findByEmail(data.email()).orElseThrow(() -> new RuntimeException("Mentor não encontrado!"));
 
         if (passwordEncoder.matches(data.senha(), mentor.getPassword())) {
             String token = this.tokenService.generateToken(mentor);
@@ -57,24 +61,24 @@ public class MentorService {
 
     // Esqueceu a senha
     public ResponseEntity<?> esqueceuSenha(AuthenticationSenhaPutDto data){
-        var mentor = repository.findByEmail(data.email()).orElseThrow(() ->
+        var mentor = mentorRepository.findByEmail(data.email()).orElseThrow(() ->
                 new RuntimeException("Mentor com email: '" + data.email() + "' não encontrado!"));
 
         var senhaEncriptada = passwordEncoder.encode(data.senha());
         mentor.setSenha(senhaEncriptada);
-        repository.save(mentor);
+        mentorRepository.save(mentor);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // Retorna todos
     public ResponseEntity<List<MentorGetDTO>> listarMentores() {
-        return ResponseEntity.ok(repository.findAll().stream().map(MentorGetDTO::new).toList());
+        return ResponseEntity.ok(mentorRepository.findAll().stream().map(MentorGetDTO::new).toList());
     }
 
     // Retorna por um por ID
     public ResponseEntity<MentorGetDTO> retornaMentorPorId(Long id) {
-        var procuraMentor = repository.findById(id);
+        var procuraMentor = mentorRepository.findById(id);
 
         if (procuraMentor.isPresent()) {
             var mentor = procuraMentor.get();
@@ -87,7 +91,7 @@ public class MentorService {
 
     // Atualiza
     public ResponseEntity<MentorGetDTO> atualizarMentor(MentorPutDTO data, Long id) {
-        var mentor = repository.findById(id).orElseThrow(() ->
+        var mentor = mentorRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Mentor com id: " + id + " não encontrado"));
 
 
@@ -109,12 +113,12 @@ public class MentorService {
 
     // Deleta
     public ResponseEntity<MentorGetDTO> deletaMentorPorId(Long id) {
-        var procuraMentor = repository.findById(id);
+        var procuraMentor = mentorRepository.findById(id);
 
         if (procuraMentor.isPresent()) {
             var mentor = procuraMentor.get();
 
-            repository.deleteById(id);
+            mentorRepository.deleteById(id);
 
             return ResponseEntity.ok().body(new MentorGetDTO(mentor));
         }
@@ -124,7 +128,7 @@ public class MentorService {
     }
 
     public Optional<MentorModel> findByEmail(String email) {
-        return repository.findByEmail(email);
+        return mentorRepository.findByEmail(email);
     }
 
 }

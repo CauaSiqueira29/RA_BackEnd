@@ -8,6 +8,6 @@ public record InstituicaoGetDTO( Long IesId,
                                  String email) {
 
     public InstituicaoGetDTO(InstituicaoModel instituicao){
-        this(instituicao.getId(), instituicao.getCnpj(), instituicao.getNome(), instituicao.getEmail());
+        this(instituicao.getId(), instituicao.getNome(), instituicao.getCnpj(), instituicao.getEmail());
     }
 }

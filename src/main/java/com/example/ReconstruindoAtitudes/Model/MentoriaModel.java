@@ -1,15 +1,11 @@
 package com.example.ReconstruindoAtitudes.Model;
 
-
 import com.example.ReconstruindoAtitudes.DTOs.Mentoria.MentoriaPostDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Setter
 @Getter
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,20 +17,20 @@ public class MentoriaModel {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "mentor_id")
+    @JoinColumn(name = "mentor_id", nullable = false)
     private MentorModel mentor;
 
-    private LocalDateTime diaHora;
-
     @ManyToOne
-    @JoinColumn(name = "mentorado_id")
+    @JoinColumn(name = "mentorado_id", nullable = false)
     private MentoradoModel mentorado;
 
-    public MentoriaModel(MentoriaPostDTO data, MentorModel mentor, MentoradoModel mentorado){
+    @OneToOne
+    @JoinColumn(name = "horario_id", nullable = false, unique = true)
+    private HorarioModel horario;
+
+    public MentoriaModel(MentoriaPostDTO data, MentorModel mentor, MentoradoModel mentorado, HorarioModel horario) {
         this.mentor = mentor;
-        this.diaHora = data.diaHora();
         this.mentorado = mentorado;
+        this.horario = horario;
     }
-
 }
-

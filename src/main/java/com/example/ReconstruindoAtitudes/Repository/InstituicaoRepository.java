@@ -9,5 +9,4 @@ public interface InstituicaoRepository extends JpaRepository<InstituicaoModel, L
     InstituicaoModel findByCnpj(String cnpj);
 
     Optional<InstituicaoModel> findByEmail(String email);
-
 }

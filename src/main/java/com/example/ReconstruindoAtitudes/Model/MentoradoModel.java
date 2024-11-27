@@ -36,15 +36,20 @@ public class MentoradoModel extends UsuarioModel {
     @OneToMany(mappedBy = "mentorado")
     private List<MentoriaModel> mentorias;
 
+    @ManyToOne
+    @JoinColumn(name = "instituicao_id", nullable = false)
+    private InstituicaoModel instituicao;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public MentoradoModel(MentoradoPostDTO data, String senha){
+    public MentoradoModel(MentoradoPostDTO data, String senha, InstituicaoModel instituicao){
         this.nome = data.nome();
         this.email = data.email();
         this.dataNascimento = data.dataNascimento();
         this.senha = senha;
         this.role = UserRole.MENTORADO;
+        this.instituicao = instituicao;
     }
 
     @Override
