@@ -37,9 +37,9 @@ public class MentorService {
         if (procuraMentor.isEmpty()) {
             var senhaEncriptada = passwordEncoder.encode(data.senha());
             MentorModel mentor = new MentorModel(data, senhaEncriptada, instituicao);
-            this.mentorRepository.save(mentor);
+            mentorRepository.save(mentor);
 
-            String token = this.tokenService.generateToken(mentor);
+            String token = tokenService.generateToken(mentor);
             return ResponseEntity.ok(new AuthenticationTokenGetDto(mentor.getId(), mentor.getEmail(), mentor.getRole(), token));
         }
 

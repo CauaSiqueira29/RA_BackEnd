@@ -21,9 +21,9 @@ public class HorarioService {
     // Cadastrar horário
     public ResponseEntity<?> cadastrarHorario(HorarioPostDto data){
         var mentor = mentorRepository.findById(data.mentorId()).orElseThrow(() ->
-                new RuntimeException(""));
-        var Existe = horarioRepository.existsByMentor_IdAndHorario(data.mentorId(), data.horario());
-        if(Existe){
+                new RuntimeException("Mentor com id: '" + data.mentorId() + "' não encontrado"));
+        var existe = horarioRepository.existsByMentor_IdAndHorario(data.mentorId(), data.horario());
+        if(existe){
             throw new RuntimeException("Mentor já possui esse horário cadastrado: " + data.horario());
         }
 
