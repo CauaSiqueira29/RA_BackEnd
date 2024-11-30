@@ -1,13 +1,12 @@
 package com.example.ReconstruindoAtitudes.DTOs.Horario;
 
-import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorGetDTO;
 import com.example.ReconstruindoAtitudes.Model.HorarioModel;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public record HorarioGetDto(Long id,
                             String emailMentor,
-                            LocalTime horario,
+                            LocalDateTime horario,
                             boolean agendado) {
 
     public HorarioGetDto(HorarioModel horario){

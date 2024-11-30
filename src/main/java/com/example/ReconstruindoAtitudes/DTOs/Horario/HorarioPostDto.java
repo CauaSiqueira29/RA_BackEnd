@@ -2,8 +2,8 @@ package com.example.ReconstruindoAtitudes.DTOs.Horario;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public record HorarioPostDto(@NotNull Long mentorId,
-                             @NotNull LocalTime horario) {
+                             @NotNull LocalDateTime horario) {
 }

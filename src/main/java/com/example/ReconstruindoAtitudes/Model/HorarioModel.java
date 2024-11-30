@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -27,7 +28,7 @@ public class HorarioModel {
     @JoinColumn(name = "mentor_id", nullable = false)
     private MentorModel mentor;
 
-    private LocalTime horario;
+    private LocalDateTime horario;
     private boolean agendado;
 
     public HorarioModel(HorarioPostDto data, MentorModel mentor) {

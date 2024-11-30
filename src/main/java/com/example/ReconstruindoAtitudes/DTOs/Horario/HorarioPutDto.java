@@ -1,6 +1,6 @@
 package com.example.ReconstruindoAtitudes.DTOs.Horario;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-public record HorarioPutDto(LocalTime horario) {
+public record HorarioPutDto(LocalDateTime horario) {
 }
