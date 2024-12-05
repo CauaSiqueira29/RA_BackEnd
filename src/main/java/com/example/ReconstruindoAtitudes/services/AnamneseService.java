@@ -43,6 +43,7 @@ public class AnamneseService {
     // Retorna anamnese
     public ResponseEntity<List<AnamneseGetDTO>> listarAnamneses() {
         return ResponseEntity.ok(anamneseRepository.findAll().stream().map(AnamneseGetDTO::new).toList());
+
     }
 
     // Retorna anamnese por id
