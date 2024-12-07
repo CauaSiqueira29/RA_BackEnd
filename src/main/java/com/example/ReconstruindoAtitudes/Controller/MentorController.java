@@ -5,6 +5,7 @@ import com.example.ReconstruindoAtitudes.DTOs.Authentication.AuthenticationToken
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorGetDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPostDTO;
 import com.example.ReconstruindoAtitudes.DTOs.Mentor.MentorPutDTO;
+import com.example.ReconstruindoAtitudes.services.AnamneseService;
 import com.example.ReconstruindoAtitudes.services.MentorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,36 +21,44 @@ import java.util.List;
 public class MentorController {
 
     @Autowired
-    private MentorService service;
+    private MentorService mentorService;
+
+    @Autowired
+    private AnamneseService anamneseService;
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> postMentor(@RequestBody @Valid MentorPostDTO data) {
-        return service.cadastrarMentor(data);
+        return mentorService.cadastrarMentor(data);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationTokenGetDto> loginMentor(@RequestBody @Valid AuthenticationPostDTO data) {
-        return service.loginMentor(data);
+        return mentorService.loginMentor(data);
     }
 
     @GetMapping("/listar")
     public ResponseEntity<?> getMentores() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.listarMentores());
+        return ResponseEntity.status(HttpStatus.OK).body(mentorService.listarMentores());
     }
 
     @GetMapping("/listar/{id}")
     public ResponseEntity<MentorGetDTO> getMentorById(@PathVariable Long id) {
-        return service.retornaMentorPorId(id);
+        return mentorService.retornaMentorPorId(id);
+    }
+
+    @GetMapping("/listarAnamneses/{mentorId}")
+    public ResponseEntity<?> getAnamnesePorAgendamento(@PathVariable Long mentorId){
+        return anamneseService.retornaAnamneseAgendada( mentorId);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MentorGetDTO> atualizaMentor(@RequestBody @Valid MentorPutDTO data, @PathVariable Long id) {
-        return service.atualizarMentor(data, id);
+        return mentorService.atualizarMentor(data, id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MentorGetDTO> deletarMentor(@PathVariable Long id) {
-        return service.deletaMentorPorId(id);
+        return mentorService.deletaMentorPorId(id);
     }
 
 }

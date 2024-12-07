@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/mentor/cadastro").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.GET, "/mentor/listar").permitAll()
                         .requestMatchers(HttpMethod.GET, "/mentor/listar/{id}").hasRole("INSTITUICAO")
+                        .requestMatchers(HttpMethod.GET, "mentor/listarAnamneses").hasRole("MENTOR")
                         .requestMatchers(HttpMethod.PUT, "/mentor/{id}").hasRole("MENTOR")
                         .requestMatchers(HttpMethod.DELETE, "/mentor/{id}").hasRole("INSTITUICAO")
                         .requestMatchers(HttpMethod.POST, "/mentoria/agendar").permitAll()

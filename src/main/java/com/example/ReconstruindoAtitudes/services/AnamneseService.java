@@ -5,8 +5,11 @@ import com.example.ReconstruindoAtitudes.DTOs.Anamnnese.AnamnesePostDTO;
 import com.example.ReconstruindoAtitudes.Model.AnamneseModel;
 import com.example.ReconstruindoAtitudes.Model.MentoradoModel;
 import com.example.ReconstruindoAtitudes.Repository.AnamneseRepository;
+import com.example.ReconstruindoAtitudes.Repository.MentorRepository;
 import com.example.ReconstruindoAtitudes.Repository.MentoradoRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class AnamneseService {
 
     @Autowired
     private MentoradoRepository mentoradoRepository;
+
+    @Autowired
+    private MentorRepository mentorRepository;
 
     // Registra anamnese
     public ResponseEntity<?> cadastrarAnamnese(AnamnesePostDTO data) {
@@ -57,6 +63,16 @@ public class AnamneseService {
         }
 
         throw new RuntimeException("Anamnese com id: " + id + " não encontrada!");
+    }
+
+    // Retorna anamnese de mentorado agendado com mentor
+    public ResponseEntity<?> retornaAnamneseAgendada(Long mentorId) {
+        var mentor = mentorRepository.findById(mentorId)
+                .orElseThrow(() -> new RuntimeException("Mentor com id: " + mentorId + " não encontrado"));
+
+        var anamneses = mentor.getMentorias().stream().map(m -> m.getMentorado().getAnamnese()).map(AnamneseGetDTO::new);
+
+        return ResponseEntity.status(HttpStatus.OK).body(anamneses);
     }
 
     // Deleta anamnese
